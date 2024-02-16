@@ -1,0 +1,6 @@
+@MDR.Server_HostAddress = http://localhost:5206
+
+GET {{MDR.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

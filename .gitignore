@@ -32,6 +32,31 @@ bld/
 [Ll]og/
 [Ll]ogs/
 
+# ignore debug
+**/Debug/
+**/Debug
+
+# ignore logs
+**/logs/
+**/Logs/
+**/logs
+**/Logs
+
+# ignore intermediate files
+**/obj/
+**/obj
+
+
+# ignore vscode
+./vscode
+./.vscode
+**/.vscode/**
+
+
+# ignore unit test result
+**/TestResults/
+**/TestResults
+
 # Visual Studio 2015/2017 cache/options directory
 .vs/
 # Uncomment if you have tasks that create the project's static files in wwwroot
