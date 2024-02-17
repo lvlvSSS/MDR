@@ -1,35 +1,50 @@
+using System.Diagnostics;
+using System.Reflection;
+using System.Reflection.Metadata;
 using MDR.Infrastructure.Extensions;
 using NLog;
+using NLog.Config;
 
 namespace MDR.Infrastructure.Log.Implementation
 {
     public class NLog4Logging : ILogging
     {
-        public NLog4Logging()
+        public NLog4Logging(string configFilePath)
         {
-            LogManager.Setup(manager => manager.LoadConfigurationFromFile());
+            LogManager.Configuration = new XmlLoggingConfiguration(configFilePath);
         }
+
+        public NLog4Logging() { }
 
         readonly Lazy<ILogger> error = new(() => LogManager.GetLogger("error"), true);
         readonly Lazy<ILogger> trace = new(() => LogManager.GetLogger("trace"), true);
         public void Error(object msg, Exception ex)
         {
-            if (msg is string)
+            ILogger logger = error.Value;
+            MethodBase? method = new StackTrace(true).GetFrame(1)?.GetMethod();
+
+            if (method == null)
             {
-                error.Value.Error(ex, msg as string);
+                logger.Error(ex, msg.GetType().IsClass && (msg is not string) ? $"\n{msg.ToJson()}" : msg.ToString());
                 return;
             }
-            error.Value.Error(ex, $"\n{msg.ToJson()}\n");
+
+            logger = LogManager.GetLogger($"{method.DeclaringType?.FullName?.Trim() ?? ""}.{method.Name}");
+            logger.Error(ex, msg.GetType().IsClass && (msg is not string) ? $"\n{msg.ToJson()}" : msg.ToString());
         }
 
         public void Trace(object msg)
         {
-            if (msg is string)
+            ILogger logger = trace.Value;
+            MethodBase? method = new StackTrace(true).GetFrame(1)?.GetMethod();
+
+            if (method == null)
             {
-                trace.Value.Trace(msg);
+                logger.Trace(msg.GetType().IsClass && (msg is not string) ? $"\n{msg.ToJson()}" : msg.ToString());
                 return;
             }
-            trace.Value.Trace($"\n{msg.ToJson()}\n");
+            logger = LogManager.GetLogger($"{method.DeclaringType?.FullName?.Trim() ?? ""}.{method.Name}");
+            logger.Trace(msg.GetType().IsClass && (msg is not string) ? $"\n{msg.ToJson()}" : msg.ToString());
         }
     }
 }
