@@ -39,7 +39,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.UseHttpLogging();
 // needed for HTTP response body with an API Controller.
-app.UseMiddleware<NLogResponseBodyMiddleware>(new NLogResponseBodyMiddlewareOptions());
+//app.UseMiddleware<NLogResponseBodyMiddleware>(new NLogResponseBodyMiddlewareOptions());
 app.MapControllers();
 
 
