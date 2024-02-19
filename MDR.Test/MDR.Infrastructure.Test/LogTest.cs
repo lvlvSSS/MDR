@@ -15,11 +15,12 @@ namespace MDR.Infrastructure.Test
         public void TestNlog()
         {
             var logging = new NLog4Logging("./NLog.config");
-            for (int i = 0; i < 10000000; i++)
-            {
-                logging.Trace("this is trace");
-                logging.Trace(123);
-            }
+            logging.Trace("this is trace");
+            logging.Trace(123);
+            logging.Device("this is device", null);
+            logging.Device("this is device", "WWKS");
+            logging.Task("this is task", TaskLogStatus.CREATE);
+            logging.Task("this is task", TaskLogStatus.FLOW);
 
             /* for (int i = 0; i < 100; i++)
             {
@@ -29,11 +30,11 @@ namespace MDR.Infrastructure.Test
             logging.Trace("PleaseLogThis sdfsdfsdff");
             logging.Trace("NotPleaseLogThis sdfsdfsdff");
  */
-            var systemLogger = LogManager.GetLogger("System.NLog.Test");
-            for (int i = 0; i < 10000; i++)
-            {
-                systemLogger.Info("this is system ...");
-            }
+            /*             var systemLogger = LogManager.GetLogger("System.NLog.Test");
+                        for (int i = 0; i < 10000; i++)
+                        {
+                            systemLogger.Info("this is system ...");
+                        } */
 
 
             /*  for (int i = 0; i < 100; i++)
