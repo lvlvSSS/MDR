@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDR.Data.Model", "MDR.Data\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDR.Infrastructure.Autofac.Extensions", "MDR.Infrastructure\MDR.Infrastructure.Autofac.Extensions\MDR.Infrastructure.Autofac.Extensions.csproj", "{D7179382-E4A3-4A44-A708-78B2494CC6DB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDR.Infrastructure.Resource", "MDR.Infrastructure\MDR.Infrastructure.Resource\MDR.Infrastructure.Resource.csproj", "{77161086-4DEA-436A-BE68-46ACB88A9CD6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -100,6 +102,10 @@ Global
 		{D7179382-E4A3-4A44-A708-78B2494CC6DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7179382-E4A3-4A44-A708-78B2494CC6DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7179382-E4A3-4A44-A708-78B2494CC6DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77161086-4DEA-436A-BE68-46ACB88A9CD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77161086-4DEA-436A-BE68-46ACB88A9CD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77161086-4DEA-436A-BE68-46ACB88A9CD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77161086-4DEA-436A-BE68-46ACB88A9CD6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EFD9852F-0324-40C9-BAA2-E38EA6772B51} = {F16DECC9-480D-441B-9B78-5061BDCF8A67}
@@ -114,5 +120,6 @@ Global
 		{EDC623FE-5EA0-4FB3-A59E-B47243B223A3} = {5B55D2C8-5A3F-4A36-A26E-37F514E7DAAB}
 		{C8694449-E00F-4860-9BD1-A18C360D7BA1} = {5B55D2C8-5A3F-4A36-A26E-37F514E7DAAB}
 		{D7179382-E4A3-4A44-A708-78B2494CC6DB} = {E4F480EA-BDA0-49C6-923B-3FF75245008B}
+		{77161086-4DEA-436A-BE68-46ACB88A9CD6} = {E4F480EA-BDA0-49C6-923B-3FF75245008B}
 	EndGlobalSection
 EndGlobal

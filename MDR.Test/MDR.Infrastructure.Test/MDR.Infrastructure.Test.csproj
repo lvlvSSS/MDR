@@ -26,6 +26,7 @@
     <ProjectReference Include="..\..\MDR.Infrastructure\MDR.Infrastructure.RestEase\MDR.Infrastructure.RestEase.csproj" />
     <ProjectReference Include="..\..\MDR.Infrastructure\MDR.Infrastructure.Extensions\MDR.Infrastructure.Extensions.csproj" />
     <ProjectReference Include="..\..\MDR.Infrastructure\MDR.Infrastructure.Log\MDR.Infrastructure.Log.csproj" />
+    <ProjectReference Include="..\..\MDR.Infrastructure\MDR.Infrastructure.Resource\MDR.Infrastructure.Resource.csproj" />
   </ItemGroup>
 
 </Project>
