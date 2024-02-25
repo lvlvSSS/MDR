@@ -1,14 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization.Formatters;
-using System.Threading.Tasks;
-using MDR.Infrastructure.Extensions;
 using MDR.Infrastructure.Log.Implementation;
 using MDR.Infrastructure.RestEase;
 using MDR.Infrastructure.RestEase.Common;
 using Newtonsoft.Json;
-using NLog.Config;
 
 namespace MDR.Infrastructure.Test
 {

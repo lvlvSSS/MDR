@@ -1,7 +1,4 @@
 using NLog.Common;
-using Microsoft.AspNetCore.Http;
-using NLog.Web.Internal;
-using System.Net.Mime;
 
 namespace MDR.Server.Middleware;
 

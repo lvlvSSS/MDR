@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MDR.Infrastructure.Log;
 using MDR.Infrastructure.Log.Implementation;
 using NLog;
-using NLog.Config;
 
 namespace MDR.Infrastructure.Test
 {
