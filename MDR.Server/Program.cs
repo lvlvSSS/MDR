@@ -1,9 +1,10 @@
 
 using MDR.Server.Middleware;
+using MDR.Server.Startup;
 using Microsoft.AspNetCore.HttpLogging;
 using NLog.Extensions.Logging;
 
-var builder = WebApplication.CreateBuilder(args);
+/* var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -43,4 +44,21 @@ app.UseHttpLogging();
 app.MapControllers();
 
 
-app.Run();
+app.Run(); */
+
+
+Host.CreateDefaultBuilder(args)
+    .ConfigureAppConfiguration((context, config) =>
+    {
+        var env = context.HostingEnvironment;
+
+        /* config.AddJsonFile("jwt.json", optional: true, reloadOnChange: true)
+            .AddJsonFile($"jwt.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+            .AddEnvironmentVariables()
+            .AddCommandLine(args); */
+    })
+    .ConfigureWebHostDefaults(webBuilder =>
+    {
+        webBuilder.UseStartup(typeof(Startup).Assembly.FullName!);
+    })
+    .Build().Run();

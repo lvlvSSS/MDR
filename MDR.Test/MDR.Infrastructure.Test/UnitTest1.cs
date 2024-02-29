@@ -1,6 +1,4 @@
-using System.Reflection;
 using MDR.Infrastructure.Extensions;
-using MDR.Infrastructure.Resource;
 
 namespace MDR.Infrastructure.Test;
 
