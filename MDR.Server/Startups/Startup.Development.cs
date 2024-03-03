@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.HttpLogging;
 using NLog.Extensions.Logging;
 
-namespace MDR.Server.Startup
+namespace MDR.Server.Startups
 {
-    public class StartupProduction(
+    public class StartupDevelopment(
        IConfiguration configuration,
        IWebHostEnvironment webHostEnvironment)
     {
@@ -59,6 +59,7 @@ namespace MDR.Server.Startup
             app.UseEndpoints(
                     endpoints => { endpoints.MapControllers(); }
             );
+            
         }
     }
 }

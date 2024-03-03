@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.HttpLogging;
 using NLog.Extensions.Logging;
 
-namespace MDR.Server.Startup
+namespace MDR.Server.Startups
 {
-    public class StartupDevelopment(
-       IConfiguration configuration,
-       IWebHostEnvironment webHostEnvironment)
+    public class Startup(
+        IConfiguration configuration,
+        IWebHostEnvironment webHostEnvironment)
     {
         public IConfiguration Configuration { get; } = configuration;
 
@@ -47,7 +47,7 @@ namespace MDR.Server.Startup
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            app.UseRouting();
+            app.UseRouting(); // attention, UseRouting must be used bofore UseEndpoints.
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -59,7 +59,6 @@ namespace MDR.Server.Startup
             app.UseEndpoints(
                     endpoints => { endpoints.MapControllers(); }
             );
-            
         }
     }
 }
