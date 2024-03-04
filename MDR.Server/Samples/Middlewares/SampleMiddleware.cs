@@ -16,7 +16,7 @@ namespace MDR.Server.Samples.Middlewares;
 ///
 /// 基于工厂的强类型 Middleware, 要求实现接口 <see cref="T:Microsoft.AspNetCore.Http.IMiddleware" />.
 /// 注意：
-///     1. 该 IMiddleware 默认是由 <see cref="T:Microsoft.AspNetCore.Http.IMiddlewareFactory" /> 的默认实现类 <see cref="T:Microsoft.AspNetCore.Http.MiddlewareFactory" /> 来进行创建(可以通过 <see cref="T:Microsoft.Extensions.DependencyInjection.Extensions.ServiceCollectionDescriptorExtensions.Replace" /> 来替换默认的 MiddlewareFactory)
+///     1. 该 IMiddleware 默认是由 <see cref="T:Microsoft.AspNetCore.Http.IMiddlewareFactory" /> 的默认实现类 <see cref="T:Microsoft.AspNetCore.Http.MiddlewareFactory" /> 来进行创建(可以通过 <see cref="Microsoft.Extensions.DependencyInjection.Extensions.ServiceCollectionDescriptorExtensions.Replace" /> 来替换默认的 MiddlewareFactory)
 ///     2. 基于约定的中间件实例都是 Singleton；而基于工厂的中间件实例可以是 Singleton、Scoped 和 Transient（当然，不建议注册为 Singleton）
 ///     3. 所有IMiddleware的Middleware不能只是IApplicationBuilder来进行Use，还需要 <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" /> 进行注册，这是因为默认实现的MiddlewareFactory 会从容器中获取已经注册的类型，如果没有注册就获取不到。
 ///     4. IMiddleware 无法通过UseMiddleware向中间件的构造函数传参
