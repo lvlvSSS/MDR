@@ -23,28 +23,23 @@ namespace MDR.Server.Samples.Middlewares;
 ///     5. 基于约定的中间件实例可以在Invoke/InvokeAsync中添加更多的依赖注入参数；而基于工厂的中间件只能按照IMiddleware的接口定义进行实现
 /// 
 /// </summary>
-public class SampleMiddleware
-{
-    public SampleMiddleware(
-        RequestDelegate next,
-        IConfiguration configuration
+/// SampleMiddleware 为基于约定的中间件
+public class SampleMiddleware(
+    RequestDelegate next,
+    IConfiguration configuration
     )
-    {
-        _next = next;
-        _configuration = configuration;
-    }
-
-    private readonly RequestDelegate _next;
-    private IConfiguration _configuration;
+{
+    private readonly RequestDelegate _next = next;
+    private readonly IConfiguration _configuration = configuration;
 
     public async Task InvokeAsync(
         HttpContext context,
         IWebHostEnvironment environment
     )
     {
-        Console.WriteLine("SampleMiddleware start, run before next middleware ...");
+        Console.WriteLine($"SampleMiddleware start,{environment.EnvironmentName} run before next middleware ...");
         await _next(context);
-        Console.WriteLine("SampleMiddleware end, run after next middleware");
+        Console.WriteLine($"SampleMiddleware end,{environment.EnvironmentName} run after next middleware");
     }
 }
 
