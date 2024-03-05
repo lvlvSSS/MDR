@@ -1,21 +1,21 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.HttpLogging;
 using NLog.Extensions.Logging;
 
 namespace MDR.Server.Startups
 {
     public class StartupProduction(
-       IConfiguration configuration,
-       IWebHostEnvironment webHostEnvironment)
+        IConfiguration configuration,
+        IWebHostEnvironment webHostEnvironment)
     {
-        public IConfiguration Configuration { get; } = configuration;
-
-        public IWebHostEnvironment WebHostEnvironment { get; set; } = webHostEnvironment;
-
+        private ILifetimeScope? _autofacContainer;
         public void ConfigureServices(IServiceCollection services)
         {
-            Console.WriteLine($"{nameof(ConfigureServices)}: {WebHostEnvironment.EnvironmentName}");
+            Console.WriteLine($"{nameof(ConfigureServices)}: {webHostEnvironment.EnvironmentName}");
             // Add services to the container.
-            services.AddControllers();
+            services.AddControllers()
+                .AddControllersAsServices(); // 将 Controller 交给 autofac 容器来处理.
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
@@ -34,19 +34,30 @@ namespace MDR.Server.Startups
                 builder.SetMinimumLevel(LogLevel.Information);
                 builder.AddNLog("NLog.config");
             });
+        }
 
+        // 1. ConfigureContainer 用于使用 Autofac 进行服务注册
+        // 2. 该方法在 ConfigureServices 之后运行，所以这里的注册会覆盖之前的注册
+        // 3. 不要 build 容器，不要调用 builder.Populate()，AutofacServiceProviderFactory 已经做了这些工作了
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            // 将服务注册划分为模块，进行注册
+            builder.RegisterModule(new AutofacModule());
         }
 
         public void Configure(IApplicationBuilder app)
         {
-            Console.WriteLine($"{nameof(Configure)}: {WebHostEnvironment.EnvironmentName}");
+            Console.WriteLine($"{nameof(Configure)}: {webHostEnvironment.EnvironmentName}");
+            // 通过此方法获取 autofac 的 DI容器
+            _autofacContainer = app.ApplicationServices.GetAutofacRoot();
             // Configure the HTTP request pipeline.
-            if (WebHostEnvironment.IsDevelopment())
+            if (webHostEnvironment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
             app.UseRouting();
 
             app.UseAuthentication();
@@ -57,7 +68,7 @@ namespace MDR.Server.Startups
 
             app.UseCors();
             app.UseEndpoints(
-                    endpoints => { endpoints.MapControllers(); }
+                endpoints => { endpoints.MapControllers(); }
             );
         }
     }

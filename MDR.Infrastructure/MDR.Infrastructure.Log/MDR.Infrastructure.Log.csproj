@@ -16,4 +16,10 @@
     <ProjectReference Include="..\MDR.Infrastructure.Extensions\MDR.Infrastructure.Extensions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

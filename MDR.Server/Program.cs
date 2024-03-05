@@ -1,3 +1,4 @@
+using Autofac.Extensions.DependencyInjection;
 using MDR.Server.Startups;
 using Microsoft.AspNetCore.HttpLogging;
 using NLog.Extensions.Logging;
@@ -14,6 +15,7 @@ public class Program
     private static void HostBuilderWithWebHost(string[] args)
     {
         Host.CreateDefaultBuilder(args)
+            .UseServiceProviderFactory(new AutofacServiceProviderFactory())
             .ConfigureAppConfiguration((context, config) =>
             {
                 var env = context.HostingEnvironment;
@@ -23,14 +25,12 @@ public class Program
                     .AddEnvironmentVariables()
                     .AddCommandLine(args); */
             })
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-                _ = webBuilder.UseStartup(typeof(Startup).Assembly.FullName!);
-            })
+            .ConfigureWebHostDefaults(webBuilder => { _ = webBuilder.UseStartup(typeof(Startup).Assembly.FullName!); })
             .Build().Run();
     }
 
     #region web application 启动方式
+
     private static void WebApplicationHost(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
@@ -75,5 +75,6 @@ public class Program
 
         app.Run();
     }
+
     #endregion
 }
