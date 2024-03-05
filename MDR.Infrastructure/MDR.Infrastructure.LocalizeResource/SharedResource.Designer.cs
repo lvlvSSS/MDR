@@ -21,21 +21,21 @@ namespace MDR.Infrastructure.LocalizeResource {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class SharedResource {
+    public class SharedResource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal SharedResource() {
+        public SharedResource() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MDR.Infrastructure.LocalizeResource.SharedResource", typeof(SharedResource).Assembly);
@@ -50,7 +50,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -60,9 +60,9 @@ namespace MDR.Infrastructure.LocalizeResource {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 参数中的字符\&quot;{0}\&quot;不是 {1} 进制数的有效字符.
+        ///   Looks up a localized string similar to 参数中的字符&quot;{0}&quot;不是 {1} 进制数的有效字符.
         /// </summary>
-        internal static string AnyRadixConvert_CharacterIsNotValid {
+        public static string AnyRadixConvert_CharacterIsNotValid {
             get {
                 return ResourceManager.GetString("AnyRadixConvert_CharacterIsNotValid", resourceCulture);
             }
@@ -71,7 +71,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 进制转换溢出.
         /// </summary>
-        internal static string AnyRadixConvert_Overflow {
+        public static string AnyRadixConvert_Overflow {
             get {
                 return ResourceManager.GetString("AnyRadixConvert_Overflow", resourceCulture);
             }
@@ -80,7 +80,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 缓存功能尚未初始化，未找到可用的 ICacheProvider 实现.
         /// </summary>
-        internal static string Caching_CacheNotInitialized {
+        public static string Caching_CacheNotInitialized {
             get {
                 return ResourceManager.GetString("Caching_CacheNotInitialized", resourceCulture);
             }
@@ -89,7 +89,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to {0} can not be null, empty or white space.
         /// </summary>
-        internal static string Check_NotNullOrWhiteSpace__0__can_not_be_null__empty_or_white_space_ {
+        public static string Check_NotNullOrWhiteSpace__0__can_not_be_null__empty_or_white_space_ {
             get {
                 return ResourceManager.GetString("Check_NotNullOrWhiteSpace__0__can_not_be_null__empty_or_white_space_", resourceCulture);
             }
@@ -98,7 +98,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to {0} length must be equal to or bigger than {1}.
         /// </summary>
-        internal static string Check_NotNullOrWhiteSpace__0__length_must_be_equal_to_or_bigger_than__1__ {
+        public static string Check_NotNullOrWhiteSpace__0__length_must_be_equal_to_or_bigger_than__1__ {
             get {
                 return ResourceManager.GetString("Check_NotNullOrWhiteSpace__0__length_must_be_equal_to_or_bigger_than__1__", resourceCulture);
             }
@@ -107,7 +107,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to {0} length must be equal to or lower than {1}.
         /// </summary>
-        internal static string Check_NotNullOrWhiteSpace__0__length_must_be_equal_to_or_lower_than__1__ {
+        public static string Check_NotNullOrWhiteSpace__0__length_must_be_equal_to_or_lower_than__1__ {
             get {
                 return ResourceManager.GetString("Check_NotNullOrWhiteSpace__0__length_must_be_equal_to_or_lower_than__1__", resourceCulture);
             }
@@ -116,7 +116,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 标识为“{0}”的项重复定义.
         /// </summary>
-        internal static string ConfigFile_ItemKeyDefineRepeated {
+        public static string ConfigFile_ItemKeyDefineRepeated {
             get {
                 return ResourceManager.GetString("ConfigFile_ItemKeyDefineRepeated", resourceCulture);
             }
@@ -125,7 +125,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 名称为“{0}”的类型不存在.
         /// </summary>
-        internal static string ConfigFile_NameToTypeIsNull {
+        public static string ConfigFile_NameToTypeIsNull {
             get {
                 return ResourceManager.GetString("ConfigFile_NameToTypeIsNull", resourceCulture);
             }
@@ -134,7 +134,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 请先初始化依赖注入服务，再使用OSharpContext.IocRegisterServices属性.
         /// </summary>
-        internal static string Context_BuildServicesFirst {
+        public static string Context_BuildServicesFirst {
             get {
                 return ResourceManager.GetString("Context_BuildServicesFirst", resourceCulture);
             }
@@ -143,7 +143,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 上下文初始化类型“{0}”不存在.
         /// </summary>
-        internal static string DbContextInitializerConfig_InitializerNotExists {
+        public static string DbContextInitializerConfig_InitializerNotExists {
             get {
                 return ResourceManager.GetString("DbContextInitializerConfig_InitializerNotExists", resourceCulture);
             }
@@ -152,7 +152,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 查询条件组中的操作类型错误，只能为And或者Or.
         /// </summary>
-        internal static string Filter_GroupOperateError {
+        public static string Filter_GroupOperateError {
             get {
                 return ResourceManager.GetString("Filter_GroupOperateError", resourceCulture);
             }
@@ -161,7 +161,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 指定的属性“{0}”在类型“{1}”中不存在.
         /// </summary>
-        internal static string Filter_RuleFieldInTypeNotFound {
+        public static string Filter_RuleFieldInTypeNotFound {
             get {
                 return ResourceManager.GetString("Filter_RuleFieldInTypeNotFound", resourceCulture);
             }
@@ -170,7 +170,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 返回数据处理错误，请重试操作.
         /// </summary>
-        internal static string Http_Seciruty_Client_DecryptResponse_Failt {
+        public static string Http_Seciruty_Client_DecryptResponse_Failt {
             get {
                 return ResourceManager.GetString("Http_Seciruty_Client_DecryptResponse_Failt", resourceCulture);
             }
@@ -179,7 +179,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 客户端对发送数据进行加密处理时发生异常.
         /// </summary>
-        internal static string Http_Security_Client_EncryptRequest_Failt {
+        public static string Http_Security_Client_EncryptRequest_Failt {
             get {
                 return ResourceManager.GetString("Http_Security_Client_EncryptRequest_Failt", resourceCulture);
             }
@@ -188,7 +188,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 客户端对返回数据签名验证未通过.
         /// </summary>
-        internal static string Http_Security_Client_VerifyResponse_Failt {
+        public static string Http_Security_Client_VerifyResponse_Failt {
             get {
                 return ResourceManager.GetString("Http_Security_Client_VerifyResponse_Failt", resourceCulture);
             }
@@ -197,7 +197,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 服务器对请求数据进行解密处理时发生异常.
         /// </summary>
-        internal static string Http_Security_Host_DecryptRequest_Failt {
+        public static string Http_Security_Host_DecryptRequest_Failt {
             get {
                 return ResourceManager.GetString("Http_Security_Host_DecryptRequest_Failt", resourceCulture);
             }
@@ -206,7 +206,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 服务器对返回数据进行加密处理时发生异常.
         /// </summary>
-        internal static string Http_Security_Host_EncryptResponse_Failt {
+        public static string Http_Security_Host_EncryptResponse_Failt {
             get {
                 return ResourceManager.GetString("Http_Security_Host_EncryptResponse_Failt", resourceCulture);
             }
@@ -215,7 +215,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 无法解析类型“{0}”的构造函数中类型为“{1}”的参数.
         /// </summary>
-        internal static string Ioc_CannotResolveService {
+        public static string Ioc_CannotResolveService {
             get {
                 return ResourceManager.GetString("Ioc_CannotResolveService", resourceCulture);
             }
@@ -224,7 +224,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 框架尚未初始化，请先初始化.
         /// </summary>
-        internal static string Ioc_FrameworkNotInitialized {
+        public static string Ioc_FrameworkNotInitialized {
             get {
                 return ResourceManager.GetString("Ioc_FrameworkNotInitialized", resourceCulture);
             }
@@ -233,7 +233,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 类型“{0}”的实现类型无法找到.
         /// </summary>
-        internal static string Ioc_ImplementationTypeNotFound {
+        public static string Ioc_ImplementationTypeNotFound {
             get {
                 return ResourceManager.GetString("Ioc_ImplementationTypeNotFound", resourceCulture);
             }
@@ -242,7 +242,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 类型“{0}”中找不到合适参数的构造函数.
         /// </summary>
-        internal static string Ioc_NoConstructorMatch {
+        public static string Ioc_NoConstructorMatch {
             get {
                 return ResourceManager.GetString("Ioc_NoConstructorMatch", resourceCulture);
             }
@@ -251,7 +251,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 实现类型不能为“{0}”，因为该类型与注册为“{1}”的其他类型无法区分.
         /// </summary>
-        internal static string Ioc_TryAddIndistinguishableTypeToEnumerable {
+        public static string Ioc_TryAddIndistinguishableTypeToEnumerable {
             get {
                 return ResourceManager.GetString("Ioc_TryAddIndistinguishableTypeToEnumerable", resourceCulture);
             }
@@ -260,7 +260,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 类型“{0}”不是仓储接口“IRepository&lt;,&gt;”的派生类.
         /// </summary>
-        internal static string IocInitializerBase_TypeNotIRepositoryType {
+        public static string IocInitializerBase_TypeNotIRepositoryType {
             get {
                 return ResourceManager.GetString("IocInitializerBase_TypeNotIRepositoryType", resourceCulture);
             }
@@ -269,7 +269,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 类型“{0}”不是操作单元“IUnitOfWork”的派生类.
         /// </summary>
-        internal static string IocInitializerBase_TypeNotIUnitOfWorkType {
+        public static string IocInitializerBase_TypeNotIUnitOfWorkType {
             get {
                 return ResourceManager.GetString("IocInitializerBase_TypeNotIUnitOfWorkType", resourceCulture);
             }
@@ -278,7 +278,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 创建名称为“{0}”的日志实例时“{1}”返回空实例.
         /// </summary>
-        internal static string Logging_CreateLogInstanceReturnNull {
+        public static string Logging_CreateLogInstanceReturnNull {
             get {
                 return ResourceManager.GetString("Logging_CreateLogInstanceReturnNull", resourceCulture);
             }
@@ -287,7 +287,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to MapperExtensions.Mapper不能为空，请先设置值.
         /// </summary>
-        internal static string Map_MapperIsNull {
+        public static string Map_MapperIsNull {
             get {
                 return ResourceManager.GetString("Map_MapperIsNull", resourceCulture);
             }
@@ -296,7 +296,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 当前Http上下文中不存在Request有效范围的Mef部件容器.
         /// </summary>
-        internal static string Mef_HttpContextItems_NotFoundRequestContainer {
+        public static string Mef_HttpContextItems_NotFoundRequestContainer {
             get {
                 return ResourceManager.GetString("Mef_HttpContextItems_NotFoundRequestContainer", resourceCulture);
             }
@@ -305,7 +305,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 指定对象中不存在名称为“{0}”的属性.
         /// </summary>
-        internal static string ObjectExtensions_PropertyNameNotExistsInType {
+        public static string ObjectExtensions_PropertyNameNotExistsInType {
             get {
                 return ResourceManager.GetString("ObjectExtensions_PropertyNameNotExistsInType", resourceCulture);
             }
@@ -314,7 +314,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 指定名称“{0}”的属性类型不是“{1}”.
         /// </summary>
-        internal static string ObjectExtensions_PropertyNameNotFixedType {
+        public static string ObjectExtensions_PropertyNameNotFixedType {
             get {
                 return ResourceManager.GetString("ObjectExtensions_PropertyNameNotFixedType", resourceCulture);
             }
@@ -323,7 +323,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 参数“{0}”的值必须在“{1}”与“{2}”之间.
         /// </summary>
-        internal static string ParameterCheck_Between {
+        public static string ParameterCheck_Between {
             get {
                 return ResourceManager.GetString("ParameterCheck_Between", resourceCulture);
             }
@@ -332,7 +332,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 参数“{0}”的值必须在“{1}”与“{2}”之间，且不能等于“{3}”.
         /// </summary>
-        internal static string ParameterCheck_BetweenNotEqual {
+        public static string ParameterCheck_BetweenNotEqual {
             get {
                 return ResourceManager.GetString("ParameterCheck_BetweenNotEqual", resourceCulture);
             }
@@ -341,7 +341,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 指定的目录路径“{0}”不存在.
         /// </summary>
-        internal static string ParameterCheck_DirectoryNotExists {
+        public static string ParameterCheck_DirectoryNotExists {
             get {
                 return ResourceManager.GetString("ParameterCheck_DirectoryNotExists", resourceCulture);
             }
@@ -350,7 +350,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 指定的文件路径“{0}”不存在.
         /// </summary>
-        internal static string ParameterCheck_FileNotExists {
+        public static string ParameterCheck_FileNotExists {
             get {
                 return ResourceManager.GetString("ParameterCheck_FileNotExists", resourceCulture);
             }
@@ -359,7 +359,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 集合“{0}”中不能包含null的项.
         /// </summary>
-        internal static string ParameterCheck_NotContainsNull_Collection {
+        public static string ParameterCheck_NotContainsNull_Collection {
             get {
                 return ResourceManager.GetString("ParameterCheck_NotContainsNull_Collection", resourceCulture);
             }
@@ -368,7 +368,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 参数“{0}”的值不能为Guid.Empty.
         /// </summary>
-        internal static string ParameterCheck_NotEmpty_Guid {
+        public static string ParameterCheck_NotEmpty_Guid {
             get {
                 return ResourceManager.GetString("ParameterCheck_NotEmpty_Guid", resourceCulture);
             }
@@ -377,7 +377,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 参数“{0}”的值必须大于“{1}”.
         /// </summary>
-        internal static string ParameterCheck_NotGreaterThan {
+        public static string ParameterCheck_NotGreaterThan {
             get {
                 return ResourceManager.GetString("ParameterCheck_NotGreaterThan", resourceCulture);
             }
@@ -386,7 +386,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 参数“{0}”的值必须大于或等于“{1}”.
         /// </summary>
-        internal static string ParameterCheck_NotGreaterThanOrEqual {
+        public static string ParameterCheck_NotGreaterThanOrEqual {
             get {
                 return ResourceManager.GetString("ParameterCheck_NotGreaterThanOrEqual", resourceCulture);
             }
@@ -395,7 +395,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 参数“{0}”的值必须小于“{1}”.
         /// </summary>
-        internal static string ParameterCheck_NotLessThan {
+        public static string ParameterCheck_NotLessThan {
             get {
                 return ResourceManager.GetString("ParameterCheck_NotLessThan", resourceCulture);
             }
@@ -404,7 +404,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 参数“{0}”的值必须小于或等于“{1}”.
         /// </summary>
-        internal static string ParameterCheck_NotLessThanOrEqual {
+        public static string ParameterCheck_NotLessThanOrEqual {
             get {
                 return ResourceManager.GetString("ParameterCheck_NotLessThanOrEqual", resourceCulture);
             }
@@ -413,7 +413,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 参数“{0}”不能为空引用.
         /// </summary>
-        internal static string ParameterCheck_NotNull {
+        public static string ParameterCheck_NotNull {
             get {
                 return ResourceManager.GetString("ParameterCheck_NotNull", resourceCulture);
             }
@@ -422,7 +422,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 参数“{0}”不能为空引用或空集合.
         /// </summary>
-        internal static string ParameterCheck_NotNullOrEmpty_Collection {
+        public static string ParameterCheck_NotNullOrEmpty_Collection {
             get {
                 return ResourceManager.GetString("ParameterCheck_NotNullOrEmpty_Collection", resourceCulture);
             }
@@ -431,7 +431,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 参数“{0}”不能为空引用或空字符串.
         /// </summary>
-        internal static string ParameterCheck_NotNullOrEmpty_String {
+        public static string ParameterCheck_NotNullOrEmpty_String {
             get {
                 return ResourceManager.GetString("ParameterCheck_NotNullOrEmpty_String", resourceCulture);
             }
@@ -440,7 +440,7 @@ namespace MDR.Infrastructure.LocalizeResource {
         /// <summary>
         ///   Looks up a localized string similar to 类型“{0}”不是实体类型.
         /// </summary>
-        internal static string QueryCacheExtensions_TypeNotEntityType {
+        public static string QueryCacheExtensions_TypeNotEntityType {
             get {
                 return ResourceManager.GetString("QueryCacheExtensions_TypeNotEntityType", resourceCulture);
             }

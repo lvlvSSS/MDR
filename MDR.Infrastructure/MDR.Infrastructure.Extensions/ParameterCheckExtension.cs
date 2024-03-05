@@ -1,4 +1,4 @@
-using static MDR.Infrastructure.Resource.Properties.Resource;
+using MDR.Infrastructure.LocalizeResource;
 
 namespace MDR.Infrastructure.Extensions;
 
@@ -16,10 +16,12 @@ public static class ParameterCheckExtension
         {
             return;
         }
+
         if (string.IsNullOrEmpty(message))
         {
             throw new ArgumentNullException(nameof(message));
         }
+
         TException exception = (TException)Activator.CreateInstance(typeof(TException), message)!;
         throw exception;
     }
@@ -36,6 +38,7 @@ public static class ParameterCheckExtension
         {
             throw new ArgumentNullException("assertionFunc");
         }
+
         Require<Exception>(assertionFunc(value), message);
     }
 
@@ -47,7 +50,8 @@ public static class ParameterCheckExtension
     /// <param name="value">要判断的值</param>
     /// <param name="assertionFunc">要验证的断言表达式</param>
     /// <param name="message">异常消息</param>
-    public static void Required<T, TException>(this T value, Func<T, bool> assertionFunc, string message) where TException : Exception
+    public static void Required<T, TException>(this T value, Func<T, bool> assertionFunc, string message)
+        where TException : Exception
     {
         ArgumentNullException.ThrowIfNull(assertionFunc);
         Require<TException>(assertionFunc(value), message);
@@ -61,7 +65,7 @@ public static class ParameterCheckExtension
     /// <exception cref="ArgumentNullException"></exception>
     public static void CheckNotNull<T>(this T value, string? paramName) where T : class
     {
-        Require<ArgumentNullException>(value != null, string.Format(ParameterCheck_NotNull, paramName));
+        Require<ArgumentNullException>(value != null, string.Format(SharedResource.ParameterCheck_NotNull, paramName));
     }
 
     /// <summary>
@@ -74,7 +78,8 @@ public static class ParameterCheckExtension
     public static void CheckNotNullOrEmpty(this string value, string paramName)
     {
         value.CheckNotNull(paramName);
-        Require<ArgumentException>(value.Length > 0, string.Format(ParameterCheck_NotNullOrEmpty_String, paramName));
+        Require<ArgumentException>(value.Length > 0,
+            string.Format(SharedResource.ParameterCheck_NotNullOrEmpty_String, paramName));
     }
 
     /// <summary>
@@ -85,7 +90,8 @@ public static class ParameterCheckExtension
     /// <exception cref="ArgumentException"></exception>
     public static void CheckNotEmpty(this Guid value, string paramName)
     {
-        Require<ArgumentException>(value != Guid.Empty, string.Format(ParameterCheck_NotEmpty_Guid, paramName));
+        Require<ArgumentException>(value != Guid.Empty,
+            string.Format(SharedResource.ParameterCheck_NotEmpty_Guid, paramName));
     }
 
     /// <summary>
@@ -99,7 +105,8 @@ public static class ParameterCheckExtension
     public static void CheckNotNullOrEmpty<T>(this IEnumerable<T> collection, string paramName)
     {
         collection.CheckNotNull(paramName);
-        Require<ArgumentException>(collection.Any(), string.Format(ParameterCheck_NotNullOrEmpty_Collection, paramName));
+        Require<ArgumentException>(collection.Any(),
+            string.Format(SharedResource.ParameterCheck_NotNullOrEmpty_Collection, paramName));
     }
 
     /// <summary>
@@ -111,10 +118,13 @@ public static class ParameterCheckExtension
     /// <param name="target">要比较的值。</param>
     /// <param name="canEqual">是否可等于。</param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public static void CheckLessThan<T>(this T value, string paramName, T target, bool canEqual = false) where T : IComparable<T>
+    public static void CheckLessThan<T>(this T value, string paramName, T target, bool canEqual = false)
+        where T : IComparable<T>
     {
         bool flag = canEqual ? value.CompareTo(target) <= 0 : value.CompareTo(target) < 0;
-        string format = canEqual ? ParameterCheck_NotLessThanOrEqual : ParameterCheck_NotLessThan;
+        string format = canEqual
+            ? SharedResource.ParameterCheck_NotLessThanOrEqual
+            : SharedResource.ParameterCheck_NotLessThan;
         Require<ArgumentOutOfRangeException>(flag, string.Format(format, paramName, target));
     }
 
@@ -127,10 +137,13 @@ public static class ParameterCheckExtension
     /// <param name="target">要比较的值。</param>
     /// <param name="canEqual">是否可等于。</param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public static void CheckGreaterThan<T>(this T value, string paramName, T target, bool canEqual = false) where T : IComparable<T>
+    public static void CheckGreaterThan<T>(this T value, string paramName, T target, bool canEqual = false)
+        where T : IComparable<T>
     {
         bool flag = canEqual ? value.CompareTo(target) >= 0 : value.CompareTo(target) > 0;
-        string format = canEqual ? ParameterCheck_NotGreaterThanOrEqual : ParameterCheck_NotGreaterThan;
+        string format = canEqual
+            ? SharedResource.ParameterCheck_NotGreaterThanOrEqual
+            : SharedResource.ParameterCheck_NotGreaterThan;
         Require<ArgumentOutOfRangeException>(flag, string.Format(format, paramName, target));
     }
 
@@ -145,19 +158,20 @@ public static class ParameterCheckExtension
     /// <param name="startEqual">是否可等于起始值</param>
     /// <param name="endEqual">是否可等于结束值</param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public static void CheckBetween<T>(this T value, string paramName, T start, T end, bool startEqual = false, bool endEqual = false)
+    public static void CheckBetween<T>(this T value, string paramName, T start, T end, bool startEqual = false,
+        bool endEqual = false)
         where T : IComparable<T>
     {
         bool flag = startEqual ? value.CompareTo(start) >= 0 : value.CompareTo(start) > 0;
         string message = startEqual
-            ? string.Format(ParameterCheck_Between, paramName, start, end)
-            : string.Format(ParameterCheck_BetweenNotEqual, paramName, start, end, start);
+            ? string.Format(SharedResource.ParameterCheck_Between, paramName, start, end)
+            : string.Format(SharedResource.ParameterCheck_BetweenNotEqual, paramName, start, end, start);
         Require<ArgumentOutOfRangeException>(flag, message);
 
         flag = endEqual ? value.CompareTo(end) <= 0 : value.CompareTo(end) < 0;
         message = endEqual
-            ? string.Format(ParameterCheck_Between, paramName, start, end)
-            : string.Format(ParameterCheck_BetweenNotEqual, paramName, start, end, end);
+            ? string.Format(SharedResource.ParameterCheck_Between, paramName, start, end)
+            : string.Format(SharedResource.ParameterCheck_BetweenNotEqual, paramName, start, end, end);
         Require<ArgumentOutOfRangeException>(flag, message);
     }
 
@@ -171,7 +185,8 @@ public static class ParameterCheckExtension
     public static void CheckDirectoryExists(this string directory, string? paramName = null)
     {
         CheckNotNull(directory, paramName);
-        Require<DirectoryNotFoundException>(Directory.Exists(directory), string.Format(ParameterCheck_DirectoryNotExists, directory));
+        Require<DirectoryNotFoundException>(Directory.Exists(directory),
+            string.Format(SharedResource.ParameterCheck_DirectoryNotExists, directory));
     }
 
     /// <summary>
@@ -184,7 +199,7 @@ public static class ParameterCheckExtension
     public static void CheckFileExists(this string filename, string? paramName = null)
     {
         CheckNotNull(filename, paramName);
-        Require<FileNotFoundException>(File.Exists(filename), string.Format(ParameterCheck_FileNotExists, filename));
+        Require<FileNotFoundException>(File.Exists(filename),
+            string.Format(SharedResource.ParameterCheck_FileNotExists, filename));
     }
 }
-

@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MDR.Infrastructure.Resource\MDR.Infrastructure.Resource.csproj" />
+    <ProjectReference Include="..\MDR.Infrastructure.LocalizeResource\MDR.Infrastructure.LocalizeResource.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using static MDR.Infrastructure.Resource.Properties.Resource;
+using MDR.Infrastructure.LocalizeResource;
 
 namespace MDR.Infrastructure.Extensions;
 
@@ -22,29 +22,38 @@ public static class Check
         {
             return;
         }
+
         if (string.IsNullOrEmpty(message))
         {
             throw new ArgumentNullException(nameof(message));
         }
+
         TException exception = (TException)Activator.CreateInstance(typeof(TException), message)!;
         if (exception != null) throw exception;
     }
 
-    public static string NotNullOrWhiteSpace(string value, string parameterName, int maxLength = int.MaxValue, int minLength = 0)
+    public static string NotNullOrWhiteSpace(string value, string parameterName, int maxLength = int.MaxValue,
+        int minLength = 0)
     {
         if (value.IsNullOrWhiteSpace())
         {
-            throw new ArgumentException(string.Format(Check_NotNullOrWhiteSpace__0__can_not_be_null__empty_or_white_space_, parameterName), parameterName);
+            throw new ArgumentException(
+                string.Format(SharedResource.Check_NotNullOrWhiteSpace__0__can_not_be_null__empty_or_white_space_,
+                    parameterName), parameterName);
         }
 
         if (value.Length > maxLength)
         {
-            throw new ArgumentException(string.Format(Check_NotNullOrWhiteSpace__0__length_must_be_equal_to_or_lower_than__1__, parameterName, maxLength), parameterName);
+            throw new ArgumentException(
+                string.Format(SharedResource.Check_NotNullOrWhiteSpace__0__length_must_be_equal_to_or_lower_than__1__,
+                    parameterName, maxLength), parameterName);
         }
 
         if (minLength > 0 && value.Length < minLength)
         {
-            throw new ArgumentException(string.Format(Check_NotNullOrWhiteSpace__0__length_must_be_equal_to_or_bigger_than__1__, parameterName, minLength), parameterName);
+            throw new ArgumentException(
+                string.Format(SharedResource.Check_NotNullOrWhiteSpace__0__length_must_be_equal_to_or_bigger_than__1__,
+                    parameterName, minLength), parameterName);
         }
 
         return value;
@@ -70,7 +79,8 @@ public static class Check
     /// <param name="value">要判断的值</param>
     /// <param name="assertionFunc">要验证的断言表达式</param>
     /// <param name="message">异常消息</param>
-    public static void Required<T, TException>(T value, Func<T, bool> assertionFunc, string message) where TException : Exception
+    public static void Required<T, TException>(T value, Func<T, bool> assertionFunc, string message)
+        where TException : Exception
     {
         ArgumentNullException.ThrowIfNull(assertionFunc);
         Required<TException>(assertionFunc(value), message);
@@ -84,7 +94,7 @@ public static class Check
     /// <exception cref="ArgumentNullException"></exception>
     public static T NotNull<T>(T value, string? paramName)
     {
-        Required<ArgumentNullException>(value != null, string.Format(ParameterCheck_NotNull, paramName));
+        Required<ArgumentNullException>(value != null, string.Format(SharedResource.ParameterCheck_NotNull, paramName));
         return value;
     }
 
@@ -109,7 +119,8 @@ public static class Check
     /// <exception cref="ArgumentException"></exception>
     public static void NotNullOrEmpty(string value, string paramName)
     {
-        Required<ArgumentException>(!string.IsNullOrEmpty(value), string.Format(ParameterCheck_NotNullOrEmpty_String, paramName));
+        Required<ArgumentException>(!string.IsNullOrEmpty(value),
+            string.Format(SharedResource.ParameterCheck_NotNullOrEmpty_String, paramName));
     }
 
     /// <summary>
@@ -120,7 +131,8 @@ public static class Check
     /// <exception cref="ArgumentException"></exception>
     public static void NotEmpty(Guid value, string paramName)
     {
-        Required<ArgumentException>(value != Guid.Empty, string.Format(ParameterCheck_NotEmpty_Guid, paramName));
+        Required<ArgumentException>(value != Guid.Empty,
+            string.Format(SharedResource.ParameterCheck_NotEmpty_Guid, paramName));
     }
 
     /// <summary>
@@ -134,7 +146,8 @@ public static class Check
     public static void NotNullOrEmpty<T>(IReadOnlyList<T> list, string paramName)
     {
         NotNull(list, paramName);
-        Required<ArgumentException>(list.Any(), string.Format(ParameterCheck_NotNullOrEmpty_Collection, paramName));
+        Required<ArgumentException>(list.Any(),
+            string.Format(SharedResource.ParameterCheck_NotNullOrEmpty_Collection, paramName));
     }
 
     /// <summary>
@@ -143,7 +156,8 @@ public static class Check
     public static void HasNoNulls<T>(IReadOnlyList<T> list, string paramName)
     {
         NotNull(list, paramName);
-        Required<ArgumentException>(list.All(m => m != null), string.Format(ParameterCheck_NotContainsNull_Collection, paramName));
+        Required<ArgumentException>(list.All(m => m != null),
+            string.Format(SharedResource.ParameterCheck_NotContainsNull_Collection, paramName));
     }
 
     /// <summary>
@@ -158,7 +172,9 @@ public static class Check
     public static void LessThan<T>(T value, string paramName, T target, bool canEqual = false) where T : IComparable<T>
     {
         bool flag = canEqual ? value.CompareTo(target) <= 0 : value.CompareTo(target) < 0;
-        string format = canEqual ? ParameterCheck_NotLessThanOrEqual : ParameterCheck_NotLessThan;
+        string format = canEqual
+            ? SharedResource.ParameterCheck_NotLessThanOrEqual
+            : SharedResource.ParameterCheck_NotLessThan;
         Required<ArgumentOutOfRangeException>(flag, string.Format(format, paramName, target));
     }
 
@@ -171,10 +187,13 @@ public static class Check
     /// <param name="target">要比较的值。</param>
     /// <param name="canEqual">是否可等于。</param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public static void GreaterThan<T>(T value, string paramName, T target, bool canEqual = false) where T : IComparable<T>
+    public static void GreaterThan<T>(T value, string paramName, T target, bool canEqual = false)
+        where T : IComparable<T>
     {
         bool flag = canEqual ? value.CompareTo(target) >= 0 : value.CompareTo(target) > 0;
-        string format = canEqual ? ParameterCheck_NotGreaterThanOrEqual : ParameterCheck_NotGreaterThan;
+        string format = canEqual
+            ? SharedResource.ParameterCheck_NotGreaterThanOrEqual
+            : SharedResource.ParameterCheck_NotGreaterThan;
         Required<ArgumentOutOfRangeException>(flag, string.Format(format, paramName, target));
     }
 
@@ -189,19 +208,20 @@ public static class Check
     /// <param name="startEqual">是否可等于起始值</param>
     /// <param name="endEqual">是否可等于结束值</param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public static void Between<T>(T value, string paramName, T start, T end, bool startEqual = false, bool endEqual = false)
+    public static void Between<T>(T value, string paramName, T start, T end, bool startEqual = false,
+        bool endEqual = false)
         where T : IComparable<T>
     {
         bool flag = startEqual ? value.CompareTo(start) >= 0 : value.CompareTo(start) > 0;
         string message = startEqual
-            ? string.Format(ParameterCheck_Between, paramName, start, end)
-            : string.Format(ParameterCheck_BetweenNotEqual, paramName, start, end, start);
+            ? string.Format(SharedResource.ParameterCheck_Between, paramName, start, end)
+            : string.Format(SharedResource.ParameterCheck_BetweenNotEqual, paramName, start, end, start);
         Required<ArgumentOutOfRangeException>(flag, message);
 
         flag = endEqual ? value.CompareTo(end) <= 0 : value.CompareTo(end) < 0;
         message = endEqual
-            ? string.Format(ParameterCheck_Between, paramName, start, end)
-            : string.Format(ParameterCheck_BetweenNotEqual, paramName, start, end, end);
+            ? string.Format(SharedResource.ParameterCheck_Between, paramName, start, end)
+            : string.Format(SharedResource.ParameterCheck_BetweenNotEqual, paramName, start, end, end);
         Required<ArgumentOutOfRangeException>(flag, message);
     }
 
@@ -215,7 +235,8 @@ public static class Check
     public static void DirectoryExists(string directory, string? paramName = null)
     {
         NotNull(directory, paramName);
-        Required<DirectoryNotFoundException>(Directory.Exists(directory), string.Format(ParameterCheck_DirectoryNotExists, directory));
+        Required<DirectoryNotFoundException>(Directory.Exists(directory),
+            string.Format(SharedResource.ParameterCheck_DirectoryNotExists, directory));
     }
 
     /// <summary>
@@ -228,8 +249,7 @@ public static class Check
     public static void FileExists(string filename, string? paramName = null)
     {
         NotNull(filename, paramName!);
-        Required<FileNotFoundException>(File.Exists(filename), string.Format(ParameterCheck_FileNotExists, filename));
+        Required<FileNotFoundException>(File.Exists(filename),
+            string.Format(SharedResource.ParameterCheck_FileNotExists, filename));
     }
-
-
 }

@@ -1,4 +1,5 @@
 using MDR.Infrastructure.Extensions;
+using MDR.Infrastructure.LocalizeResource;
 using Xunit.Abstractions;
 
 namespace MDR.Infrastructure.Test;
@@ -9,7 +10,7 @@ public class UnitTest1(ITestOutputHelper testOutputHelper)
     public void Test1()
     {
         var demo = new { a = 123, b = "223" };
-        testOutputHelper.WriteLine(Resource.Properties.Resource.AnyRadixConvert_CharacterIsNotValid);
+        testOutputHelper.WriteLine(string.Format(SharedResource.AnyRadixConvert_CharacterIsNotValid, "aaa", "bbb"));
         testOutputHelper.WriteLine(demo.ToJson());
     }
 }
