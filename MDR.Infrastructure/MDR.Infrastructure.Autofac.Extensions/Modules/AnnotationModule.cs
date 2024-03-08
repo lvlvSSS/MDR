@@ -26,6 +26,6 @@ public class AnnotationModule : Module
 
     protected override void Load(ContainerBuilder builder)
     {
-        // 这里添加对注解的类利用Autofac进行注册
+        // 这里添加 对注解的类 利用Autofac进行注册
     }
 }

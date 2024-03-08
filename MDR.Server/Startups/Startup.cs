@@ -2,7 +2,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.HttpLogging;
 using NLog.Extensions.Logging;
-
+#nullable enable
 namespace MDR.Server.Startups
 {
     public class Startup(

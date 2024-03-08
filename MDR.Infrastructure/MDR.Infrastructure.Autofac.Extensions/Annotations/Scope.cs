@@ -4,7 +4,7 @@ public class Scope(string scopeName = "singleton")
 {
     public override string ToString() => scopeName;
 
-    public static Scope Singleton = new Scope();
+    public static Scope Singleton = new Scope("singleton");
 
     public static Scope Prototype = new Scope("prototype");
 
