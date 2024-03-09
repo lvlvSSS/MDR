@@ -20,10 +20,10 @@ public class Program
             {
                 var env = context.HostingEnvironment;
 
-                /* config.AddJsonFile("jwt.json", optional: true, reloadOnChange: true)
+                config.AddJsonFile("jwt.json", optional: true, reloadOnChange: true)
                     .AddJsonFile($"jwt.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                     .AddEnvironmentVariables()
-                    .AddCommandLine(args); */
+                    .AddCommandLine(args);
             })
             .ConfigureWebHostDefaults(webBuilder => { _ = webBuilder.UseStartup(typeof(Startup).Assembly.FullName!); })
             .Build().Run();
