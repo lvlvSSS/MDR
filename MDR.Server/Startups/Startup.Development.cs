@@ -49,7 +49,7 @@ namespace MDR.Server.Startups
         public void Configure(IApplicationBuilder app)
         {
             Console.WriteLine($"{nameof(Configure)}: {webHostEnvironment.EnvironmentName}");
-            Console.WriteLine($"URLS: {configuration["URLS"]}");
+            Console.WriteLine($"nelson: {configuration["nelson"]}");
             // 通过此方法获取 autofac 的 DI容器
             _autofacContainer = app.ApplicationServices.GetAutofacRoot();
             // Configure the HTTP request pipeline.

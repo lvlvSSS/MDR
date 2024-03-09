@@ -45,19 +45,19 @@ internal static class ReflectionExtensions
     /// <param name="methodName"></param>
     /// <returns></returns>
     /// <exception cref="DependencyResolutionException"></exception>
-    internal static MethodInfo AssertMethod(Type type, string methodName)
+    internal static MethodInfo? AssertMethod(Type type, string methodName)
     {
         if (string.IsNullOrEmpty(methodName)) return null;
 
         var emethodName = methodName.Contains(".") ? methodName.Split('.').LastOrDefault() : methodName;
-        MethodInfo method = null;
+        MethodInfo? method = null;
         try
         {
             var flags = BindingFlags.Public |
                         BindingFlags.NonPublic |
                         BindingFlags.Static |
                         BindingFlags.Instance;
-            method = type.GetMethod(emethodName, flags);
+            method = type.GetMethod(emethodName!, flags);
         }
         catch (Exception)
         {
@@ -92,7 +92,7 @@ internal static class ReflectionExtensions
     /// </summary>
     /// <param name="classPath"></param>
     /// <returns></returns>
-    internal static Type FindClassIgnoreErr(this string classPath)
+    internal static Type? FindClassIgnoreErr(this string classPath)
     {
         try
         {
@@ -362,10 +362,10 @@ internal static class ReflectionExtensions
         where T : Attribute
     {
         return from i in methodInfo.DeclaringType.GetImplementedInterfaces()
-            from p in i.GetMethods()
-            where methodInfo.IsAssignableFromInterfaceMethod(p)
-            from a in p.GetCustomAttributes(typeof(T)).OfType<T>()
-            select a;
+               from p in i.GetMethods()
+               where methodInfo.IsAssignableFromInterfaceMethod(p)
+               from a in p.GetCustomAttributes(typeof(T)).OfType<T>()
+               select a;
     }
 
     public static Type[] GetImplementedInterfaces(this Type type)

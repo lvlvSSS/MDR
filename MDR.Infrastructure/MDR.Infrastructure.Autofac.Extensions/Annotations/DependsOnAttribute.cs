@@ -62,7 +62,9 @@ public sealed class DependsOnAttribute : Attribute
 
         if (DependsTypes != null && DependsTypes.Any())
         {
-            list.AddRange(DependsTypes.Select(type => type.FindClassIgnoreErr()).Where(temp => temp != null));
+            var ranges = DependsTypes.Select(type => type.FindClassIgnoreErr()).Where(temp => temp != null);
+            if (ranges != null && ranges.Any())
+                list.AddRange(ranges!);
         }
 
         return list.Distinct().ToArray();
