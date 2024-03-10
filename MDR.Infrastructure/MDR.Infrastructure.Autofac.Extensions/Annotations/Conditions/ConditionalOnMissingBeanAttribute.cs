@@ -38,10 +38,10 @@ public class ConditionalOnMissingBeanAttribute : ConditionalAttribute
     /// <summary>
     /// keyname
     /// </summary>
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     /// <summary>
     /// 类型判断
     /// </summary>
-    public Type Type { get; set; }
+    /* public Type Type { get; set; } */
 }

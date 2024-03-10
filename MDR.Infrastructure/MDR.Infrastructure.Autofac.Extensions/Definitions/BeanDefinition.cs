@@ -51,12 +51,12 @@ public class BeanDefinition
     /// <summary>
     ///     当前类型
     /// </summary>
-    public Type CurrentType { get; set; }
+    public Type? CurrentType { get; set; }
 
     /// <summary>
     ///     注册定义
     /// </summary>
-    public ComponentAttribute Bean { get; set; }
+    public ComponentAttribute? Bean { get; set; }
 
     /// <summary>
     ///     按照从小到大的顺序注册 如果同一个Type被处理多次会被覆盖！
@@ -69,6 +69,6 @@ public class BeanDefinition
     /// <returns></returns>
     public override string ToString()
     {
-        return $"{CurrentType.Namespace}.{CurrentType.Name}({OrderIndex})";
+        return $"{CurrentType?.Namespace}.{CurrentType?.Name}({OrderIndex})";
     }
 }

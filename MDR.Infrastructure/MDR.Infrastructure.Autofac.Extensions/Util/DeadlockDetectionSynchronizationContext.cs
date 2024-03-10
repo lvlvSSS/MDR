@@ -71,9 +71,9 @@ internal class DeadLockCheck : IDisposable
 internal class DeadlockDetectionSynchronizationContext : SynchronizationContext
 {
     private readonly string _caller;
-    private readonly object _sync = new object();
+    private readonly object _sync = new();
     private bool _isBlocking;
-    private Thread _currentThread;
+    private Thread? _currentThread;
 
     public DeadlockDetectionSynchronizationContext(SynchronizationContext? baseSynchronizationContext, string caller)
     {
@@ -87,7 +87,7 @@ internal class DeadlockDetectionSynchronizationContext : SynchronizationContext
 
     public SynchronizationContext? BaseSynchronizationContext { get; }
 
-    public override void Post(SendOrPostCallback d, object state)
+    public override void Post(SendOrPostCallback d, object? state)
     {
         _currentThread = Thread.CurrentThread;
 
@@ -112,7 +112,7 @@ internal class DeadlockDetectionSynchronizationContext : SynchronizationContext
         BaseSynchronizationContext?.Post(restoreContextCallback, state);
     }
 
-    public override void Send(SendOrPostCallback d, object state)
+    public override void Send(SendOrPostCallback d, object? state)
     {
         if (BaseSynchronizationContext != null)
             BaseSynchronizationContext.Send(d, state);
@@ -182,7 +182,7 @@ public class AopDeadlockException : Exception
     /// <summary>
     /// Stack trace where the program initiated the blocking operation.
     /// </summary>
-    public StackTrace BlockingStackTrace { get; }
+    public StackTrace? BlockingStackTrace { get; }
 
     /// <summary>
     /// Flag indicating whether the deadlock is a potential deadlock or an
@@ -193,16 +193,16 @@ public class AopDeadlockException : Exception
     /// <summary>
     /// 内部错误信息
     /// </summary>
-    public string InnerExceptionMsg { get; }
+    public string? InnerExceptionMsg { get; }
 
-    internal AopDeadlockException(StackTrace blockingStackTrace, bool isPotentialDeadlock)
+    internal AopDeadlockException(StackTrace? blockingStackTrace, bool isPotentialDeadlock)
         : base(GetMessage(blockingStackTrace, null, isPotentialDeadlock))
     {
         BlockingStackTrace = blockingStackTrace;
         IsPotentialDeadlock = isPotentialDeadlock;
     }
 
-    internal AopDeadlockException(string blockingStackTrace, bool isPotentialDeadlock)
+    internal AopDeadlockException(string? blockingStackTrace, bool isPotentialDeadlock)
         : base(GetMessage(null, blockingStackTrace, isPotentialDeadlock))
     {
         InnerExceptionMsg = blockingStackTrace;

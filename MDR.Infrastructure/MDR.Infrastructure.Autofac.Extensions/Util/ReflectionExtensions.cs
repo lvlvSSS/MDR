@@ -165,7 +165,7 @@ internal static class ReflectionExtensions
     /// <param name="pi">Parameter to the property setter.</param>
     /// <param name="prop">The property info on which the setter is specified.</param>
     /// <returns>True if the parameter is a property setter.</returns>
-    public static bool TryGetDeclaringProperty(this ParameterInfo pi, out PropertyInfo prop)
+    public static bool TryGetDeclaringProperty(this ParameterInfo pi, out PropertyInfo? prop)
     {
         var mi = pi.Member as MethodInfo;
         if (mi != null && mi.DeclaringType != null && mi.IsSpecialName &&
@@ -204,7 +204,7 @@ internal static class ReflectionExtensions
     /// <param name="type">Type object of that class</param>
     /// <param name="getBaseType">is get baseType methods</param>
     /// <returns></returns>
-    public static IEnumerable<MethodInfo> GetAllMethod(this Type type, bool getBaseType = true)
+    public static IEnumerable<MethodInfo> GetAllMethod(this Type? type, bool getBaseType = true)
     {
         if (type == null || type == typeof(object)) return Enumerable.Empty<MethodInfo>();
 
@@ -224,7 +224,7 @@ internal static class ReflectionExtensions
     /// <param name="type"></param>
     /// <param name="methodName"></param>
     /// <returns></returns>
-    public static MethodInfo GetMethod(this Type type, string methodName)
+    public static MethodInfo? GetMethod(this Type? type, string methodName)
     {
         if (type == null) return null;
 
@@ -245,7 +245,7 @@ internal static class ReflectionExtensions
     /// </summary>
     /// <param name="type">Type object of that class</param>
     /// <returns></returns>
-    public static IEnumerable<FieldInfo> GetAllFields(this Type type)
+    public static IEnumerable<FieldInfo> GetAllFields(this Type? type)
     {
         if (type == null || type == typeof(object)) return Enumerable.Empty<FieldInfo>();
 
@@ -263,7 +263,7 @@ internal static class ReflectionExtensions
     /// </summary>
     /// <param name="type">Type object of that class</param>
     /// <returns></returns>
-    public static IEnumerable<PropertyInfo> GetAllProperties(this Type type)
+    public static IEnumerable<PropertyInfo> GetAllProperties(this Type? type)
     {
         if (type == null || type == typeof(object)) return Enumerable.Empty<PropertyInfo>();
 
@@ -361,7 +361,7 @@ internal static class ReflectionExtensions
     public static IEnumerable<T> GetCustomAttributesByImplementedInterfaces<T>(this MethodInfo methodInfo)
         where T : Attribute
     {
-        return from i in methodInfo.DeclaringType.GetImplementedInterfaces()
+        return from i in methodInfo.DeclaringType!.GetImplementedInterfaces()
                from p in i.GetMethods()
                where methodInfo.IsAssignableFromInterfaceMethod(p)
                from a in p.GetCustomAttributes(typeof(T)).OfType<T>()

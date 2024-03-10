@@ -25,7 +25,7 @@ public sealed class BeanAttribute : Attribute
     /// <summary>
     /// 注册单个的key
     /// </summary>
-    public string Key { get; private set; }
+    public string? Key { get; private set; }
 
     /// <summary>
     /// 作用域
@@ -35,15 +35,15 @@ public sealed class BeanAttribute : Attribute
     /// <summary>
     /// 被创建后执行的方法
     /// </summary>
-    public string InitMethod { get; set; }
+    public string? InitMethod { get; set; }
 
     /// <summary>
     /// 被Release时执行的方法
     /// </summary>
-    public string DestroyMethod { get; set; }
+    public string? DestroyMethod { get; set; }
 
     /// <summary>
     /// 依赖的 是用来表示一个bean A的实例化依赖另一个bean B的实例化， 但是A并不需要持有一个B的对象
     /// </summary>
-    public DependsOnAttribute DependsOn { get; set; }
+    public DependsOnAttribute? DependsOn { get; set; }
 }

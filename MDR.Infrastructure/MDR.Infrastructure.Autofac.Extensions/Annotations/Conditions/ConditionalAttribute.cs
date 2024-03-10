@@ -25,5 +25,5 @@ public class ConditionalAttribute : Attribute
     /// <summary>
     /// type必须是继承了Condition的接口
     /// </summary>
-    public Type Type { get; set; }
+    public Type? Type { get; set; }
 }

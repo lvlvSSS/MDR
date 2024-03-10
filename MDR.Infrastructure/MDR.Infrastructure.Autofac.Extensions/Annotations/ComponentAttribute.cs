@@ -33,13 +33,13 @@ public class ComponentAttribute : Attribute
     /// <summary>
     ///     如果设置值为external代表需要自己管理dispose
     /// </summary>
-    public Ownership Ownership { get; set; }
+    public Ownership? Ownership { get; set; }
 
     /// <summary>
     ///     指定拦截器类型，默认为class类型拦截器，被拦截的方法必须指定为virtual
     ///     如果指定了的话就无法被PointCut或者Aspect拦截
     /// </summary>
-    public Type Interceptor { get; set; }
+    public Type? Interceptor { get; set; }
 
     /// <summary>
     ///     拦截器类型
@@ -60,17 +60,17 @@ public class ComponentAttribute : Attribute
     /// <summary>
     ///     如果同一个类型的拦截器有多个 可以指定Key
     /// </summary>
-    public string InterceptorKey { get; set; }
+    public string? InterceptorKey { get; set; }
 
     /// <summary>
     ///     被创建后执行的方法
     /// </summary>
-    public string InitMethod { get; set; }
+    public string? InitMethod { get; set; }
 
     /// <summary>
     ///     被Release时执行的方法
     /// </summary>
-    public string DestroyMethod { get; set; }
+    public string? DestroyMethod { get; set; }
 
     /// <summary>
     ///     注册类型
@@ -122,17 +122,17 @@ public class ComponentAttribute : Attribute
     ///     注册的类型
     ///     如果为null则注册为本身类型
     /// </summary>
-    public Type[] Services { get; set; }
+    public Type[]? Services { get; set; }
 
     /// <summary>
     ///     注册单个的类型
     /// </summary>
-    public Type Service { get; }
+    public Type? Service { get; }
 
     /// <summary>
     ///     注册单个的key
     /// </summary>
-    public string Key { get; }
+    public string? Key { get; }
 
     /// <summary>
     ///     是否不允许被代理 比如Pointcut的类就不能被代理
@@ -150,7 +150,7 @@ public class ComponentAttribute : Attribute
     /// <summary>
     ///     注册key 在同一个类型注册多个的时候就需要用到key来做区分
     /// </summary>
-    public string[] Keys { get; set; }
+    public string[]? Keys { get; set; }
 
     #endregion
 }

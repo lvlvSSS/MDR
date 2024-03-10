@@ -25,10 +25,10 @@ internal class OnMissingBean : ICondition
         if (!string.IsNullOrEmpty(metaConfig.Name))
         {
             //匹配name加类型
-            return context.IsRegistered(new KeyedService(metaConfig.Name, metaConfig.Type));
+            return context.IsRegistered(new KeyedService(metaConfig.Name, metaConfig.Type!));
         }
 
         //只匹配类型
-        return context.IsRegistered(new TypedService(metaConfig.Type));
+        return context.IsRegistered(new TypedService(metaConfig.Type!));
     }
 }

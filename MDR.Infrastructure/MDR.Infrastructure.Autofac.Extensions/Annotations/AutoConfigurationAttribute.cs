@@ -38,18 +38,18 @@ public class AutoConfigurationAttribute : Attribute
     /// <summary>
     /// 被创建后执行的方法
     /// </summary>
-    public string InitMethod { get; set; }
+    public string? InitMethod { get; set; }
 
     /// <summary>
     /// 被Release时执行的方法
     /// </summary>
-    public string DestroyMethod { get; set; }
+    public string? DestroyMethod { get; set; }
 }
 
 internal class AutoConfigurationInfo
 {
-    public AutoConfigurationAttribute AutoConfiguration { get; set; }
-    public Type Type { get; set; }
-    public string Key { get; set; }
+    public AutoConfigurationAttribute? AutoConfiguration { get; set; }
+    public Type? Type { get; set; }
+    public string? Key { get; set; }
     public int OrderIndex { get; set; }
 }
