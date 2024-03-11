@@ -22,7 +22,6 @@ public static class ObjectExtension
         };
 
         return JsonConvert.SerializeObject(o, settings);
-
     }
 
     /// <summary>
@@ -103,7 +102,8 @@ public static class ObjectExtension
         foreach (PropertyDescriptor property in properties)
         {
             var val = property.GetValue(value);
-            if (property.PropertyType.FullName != null && property.PropertyType.FullName.StartsWith("<>f__AnonymousType"))
+            if (property.PropertyType.FullName != null &&
+                property.PropertyType.FullName.StartsWith("<>f__AnonymousType"))
             {
                 dynamic dval = val!.ToDynamic();
                 expando.Add(property.Name, dval);
@@ -135,7 +135,6 @@ public static class ObjectExtension
         using TextWriter writer = new StringWriter();
         formatter.Serialize(writer, obj);
         writer.Flush();
-
-        return formatter.Deserialize(new JsonTextReader(new StringReader(writer.ToString()!))) as T;
+        return formatter.Deserialize<T>(new JsonTextReader(new StringReader(writer.ToString()!)));
     }
 }
