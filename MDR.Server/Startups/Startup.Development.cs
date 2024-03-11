@@ -26,8 +26,8 @@ namespace MDR.Server.Startups
                 builder.RequestHeaders.Add("My-Request-Header");
                 builder.ResponseHeaders.Add("My-Response-Header");
                 builder.MediaTypeOptions.AddText("application/javascript");
-                builder.RequestBodyLogLimit = 4096;
-                builder.ResponseBodyLogLimit = 4096;
+                builder.RequestBodyLogLimit = 64 * 1024;
+                builder.ResponseBodyLogLimit = 64 * 1024;
             });
             services.AddLogging(builder =>
             {

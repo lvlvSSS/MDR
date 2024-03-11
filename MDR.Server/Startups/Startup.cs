@@ -2,9 +2,21 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.HttpLogging;
 using NLog.Extensions.Logging;
+
 #nullable enable
 namespace MDR.Server.Startups
 {
+    /// <summary>
+    /// Startup 启动时，因为 <see cref="T:Microsoft.Extensions.DependencyInjection.DefaultServiceProviderFactory" /> 或者 <see cref="T:Autofac.Extensions.DependencyInjection.AutofacServiceProviderFactory" /> 还未创建，
+    /// 因此是用 <see cref="T:Microsoft.AspNetCore.Hosting.GenericWebHostBuilder.HostServiceProvider"/> 作为 IServiceProvider的实现类。
+    /// 而 HostServiceProvider 实现类的 GetService 只提供 <see cref="T:Microsoft.Extensions.Hosting.IHostingEnvironment" />，
+    /// <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostEnvironment" />，
+    /// <see cref="T:Microsoft.Extensions.Hosting.IHostEnvironment" />，
+    /// <see cref="T:Microsoft.Extensions.Configuration.IConfiguration" /> 的注入。
+    /// 所以，Startup 构造函数的参数只能使用以上几种类型。
+    /// </summary>
+    /// <param name="configuration"></param>
+    /// <param name="webHostEnvironment"></param>
     public class Startup(
         IConfiguration configuration,
         IWebHostEnvironment webHostEnvironment)
@@ -26,8 +38,8 @@ namespace MDR.Server.Startups
                 builder.RequestHeaders.Add("My-Request-Header");
                 builder.ResponseHeaders.Add("My-Response-Header");
                 builder.MediaTypeOptions.AddText("application/javascript");
-                builder.RequestBodyLogLimit = 4096;
-                builder.ResponseBodyLogLimit = 4096;
+                builder.RequestBodyLogLimit = 64 * 1024;
+                builder.ResponseBodyLogLimit = 64 * 1024;
             });
             services.AddLogging(builder =>
             {
