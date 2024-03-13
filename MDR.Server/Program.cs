@@ -20,10 +20,13 @@ public class Program
             {
                 var env = context.HostingEnvironment;
 
-                config.AddJsonFile("jwt.json", optional: true, reloadOnChange: true)
-                    .AddJsonFile($"jwt.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
-                    .AddEnvironmentVariables()
-                    .AddCommandLine(args);
+                config.AddJsonFile("jwt.json", optional: false, reloadOnChange: false) // jwt config
+                    .AddJsonFile($"jwt.{env.EnvironmentName}.json", optional: true, reloadOnChange: false) // jwt config
+                    .AddJsonFile($"psql.json", optional: true, reloadOnChange: true) // postgresql config
+                    .AddJsonFile($"psql.{env.EnvironmentName}.json", optional: true,
+                        reloadOnChange: true) // postgresql config
+                    .AddEnvironmentVariables("PSQL_"); // add postgresql environment
+                //.AddCommandLine(args);
             })
             .ConfigureWebHostDefaults(webBuilder => { _ = webBuilder.UseStartup(typeof(Startup).Assembly.FullName!); })
             .Build().Run();

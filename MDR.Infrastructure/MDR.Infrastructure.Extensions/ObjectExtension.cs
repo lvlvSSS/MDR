@@ -1,11 +1,20 @@
 using System.ComponentModel;
 using System.Dynamic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace MDR.Infrastructure.Extensions;
 
 public static class ObjectExtension
 {
+    public static JsonSerializerSettings DefaultSerializerSettings = new JsonSerializerSettings
+    {
+        ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+        Formatting = Newtonsoft.Json.Formatting.Indented,
+        DateFormatString = "yyyy-MM-dd HH:mm:ss",
+        ContractResolver = new CamelCasePropertyNamesContractResolver()
+    };
+
     /// <summary>
     /// json 序列化
     /// </summary>
@@ -14,12 +23,7 @@ public static class ObjectExtension
     /// <returns></returns>
     public static string ToJson(this object o, JsonSerializerSettings? settings = null)
     {
-        settings ??= new JsonSerializerSettings
-        {
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-            Formatting = Newtonsoft.Json.Formatting.Indented,
-            DateFormatString = "yyyy-MM-dd HH:mm:ss"
-        };
+        settings ??= DefaultSerializerSettings;
 
         return JsonConvert.SerializeObject(o, settings);
     }
@@ -136,5 +140,16 @@ public static class ObjectExtension
         formatter.Serialize(writer, obj);
         writer.Flush();
         return formatter.Deserialize<T>(new JsonTextReader(new StringReader(writer.ToString()!)));
+    }
+}
+
+public class SnakeCasePropertyNamesContractResolver : CamelCasePropertyNamesContractResolver
+{
+    public SnakeCasePropertyNamesContractResolver() : base()
+    {
+        var snakeCaseNamingStrategy = new SnakeCaseNamingStrategy();
+        snakeCaseNamingStrategy.ProcessDictionaryKeys = true;
+        snakeCaseNamingStrategy.OverrideSpecifiedNames = true;
+        this.NamingStrategy = snakeCaseNamingStrategy;
     }
 }

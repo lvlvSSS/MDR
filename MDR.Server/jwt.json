@@ -1,0 +1,9 @@
+{
+  "Jwt": {
+    "Token": {
+      "SecretKey": "1234567890abcdef",
+      "Issuer": "nelson",
+      "Audience": "nelson"
+    }
+  }
+}

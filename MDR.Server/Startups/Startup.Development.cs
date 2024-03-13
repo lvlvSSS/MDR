@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using MDR.Data.Model.Jwt;
 using Microsoft.AspNetCore.HttpLogging;
 using NLog.Extensions.Logging;
 
@@ -20,6 +21,7 @@ namespace MDR.Server.Startups
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+            services.Configure<JwtTokenParameterOptions>(configuration.GetSection("Jwt:Token"));
             services.AddHttpLogging(builder =>
             {
                 builder.LoggingFields = HttpLoggingFields.All;
