@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using MDR.Data.Model.Jwt;
 using Microsoft.AspNetCore.HttpLogging;
 using NLog.Extensions.Logging;
 
@@ -31,7 +32,7 @@ namespace MDR.Server.Startups
                 .AddControllersAsServices(); // 将 Controller 交给 autofac 容器来处理.
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
+            services.Configure<JwtTokenParameterOptions>(configuration.GetSection("Jwt:Token"));
             services.AddHttpLogging(builder =>
             {
                 builder.LoggingFields = HttpLoggingFields.All;
@@ -66,12 +67,14 @@ namespace MDR.Server.Startups
             _autofacContainer = app.ApplicationServices.GetAutofacRoot();
 
             // Configure the HTTP request pipeline.
+            /*
             if (webHostEnvironment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            */
 
             app.UseRouting(); // attention, UseRouting must be used bofore UseEndpoints.
             app.UseAuthentication();
