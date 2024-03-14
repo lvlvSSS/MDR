@@ -2,6 +2,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using MDR.Data.Model.Jwt;
 using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.Extensions.Caching.Memory;
 using NLog.Extensions.Logging;
 
 #nullable enable
@@ -26,22 +27,29 @@ namespace MDR.Server.Startups
 
         public void ConfigureServices(IServiceCollection services)
         {
-            Console.WriteLine($"{nameof(ConfigureServices)}: {webHostEnvironment.EnvironmentName}");
-            // Add services to the container.
-            services.AddControllers()
-                .AddControllersAsServices(); // 将 Controller 交给 autofac 容器来处理.
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            // Add services to the container，并将 Controller 交给 autofac 容器来处理.
+            services.AddControllers().AddControllersAsServices();
+
             services.AddEndpointsApiExplorer();
+            // jwt options
             services.Configure<JwtTokenParameterOptions>(configuration.GetSection("Jwt:Token"));
+            // configure memory cache. default is local memory cache.
+            services.AddDistributedMemoryCache();
+            services.Configure<MemoryDistributedCacheOptions>(configuration.GetSection("LocalMemoryCache"));
+
+            // http logging configuration.
             services.AddHttpLogging(builder =>
             {
                 builder.LoggingFields = HttpLoggingFields.All;
+                /*
                 builder.RequestHeaders.Add("My-Request-Header");
                 builder.ResponseHeaders.Add("My-Response-Header");
+                */
                 builder.MediaTypeOptions.AddText("application/javascript");
-                builder.RequestBodyLogLimit = 64 * 1024;
-                builder.ResponseBodyLogLimit = 64 * 1024;
+                builder.RequestBodyLogLimit = 500 * 1024;
+                builder.ResponseBodyLogLimit = 500 * 1024;
             });
+            // configure NLog as http logging.
             services.AddLogging(builder =>
             {
                 builder.ClearProviders();
@@ -61,28 +69,20 @@ namespace MDR.Server.Startups
 
         public void Configure(IApplicationBuilder app)
         {
-            Console.WriteLine($"{nameof(Configure)}: {webHostEnvironment.EnvironmentName}");
-
             // 通过此方法获取 autofac 的 DI容器
             _autofacContainer = app.ApplicationServices.GetAutofacRoot();
 
             // Configure the HTTP request pipeline.
-            /*
-            if (webHostEnvironment.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-            */
+            app.UseRouting();
 
-            app.UseRouting(); // attention, UseRouting must be used bofore UseEndpoints.
             app.UseAuthentication();
             app.UseAuthorization();
+            // use http logging
             app.UseHttpLogging();
             // needed for HTTP response body with an API Controller.
             //app.UseMiddleware<NLogResponseBodyMiddleware>(new NLogResponseBodyMiddlewareOptions());
 
+            // cors
             app.UseCors();
             app.UseEndpoints(
                 endpoints => { endpoints.MapControllers(); }

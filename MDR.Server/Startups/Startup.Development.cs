@@ -2,6 +2,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using MDR.Data.Model.Jwt;
 using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.Extensions.Caching.Memory;
 using NLog.Extensions.Logging;
 
 namespace MDR.Server.Startups
@@ -14,23 +15,31 @@ namespace MDR.Server.Startups
 
         public void ConfigureServices(IServiceCollection services)
         {
-            Console.WriteLine($"{nameof(ConfigureServices)}: {webHostEnvironment.EnvironmentName}");
-            // Add services to the container.
-            services.AddControllers()
-                .AddControllersAsServices(); // 将 Controller 交给 autofac 容器来处理.
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            services.AddEndpointsApiExplorer();
+            // swagger only used in development.
             services.AddSwaggerGen();
+            // Add services to the container，并将 Controller 交给 autofac 容器来处理.
+            services.AddControllers().AddControllersAsServices();
+
+            services.AddEndpointsApiExplorer();
+            // jwt options
             services.Configure<JwtTokenParameterOptions>(configuration.GetSection("Jwt:Token"));
+            // configure memory cache. default is local memory cache.
+            services.AddDistributedMemoryCache();
+            services.Configure<MemoryDistributedCacheOptions>(configuration.GetSection("LocalMemoryCache"));
+
+            // http logging configuration.
             services.AddHttpLogging(builder =>
             {
                 builder.LoggingFields = HttpLoggingFields.All;
+                /*
                 builder.RequestHeaders.Add("My-Request-Header");
                 builder.ResponseHeaders.Add("My-Response-Header");
+                */
                 builder.MediaTypeOptions.AddText("application/javascript");
-                builder.RequestBodyLogLimit = 64 * 1024;
-                builder.ResponseBodyLogLimit = 64 * 1024;
+                builder.RequestBodyLogLimit = 500 * 1024;
+                builder.ResponseBodyLogLimit = 500 * 1024;
             });
+            // configure NLog as http logging.
             services.AddLogging(builder =>
             {
                 builder.ClearProviders();
@@ -50,11 +59,7 @@ namespace MDR.Server.Startups
 
         public void Configure(IApplicationBuilder app)
         {
-            Console.WriteLine($"{nameof(Configure)}: {webHostEnvironment.EnvironmentName}");
-            Console.WriteLine($"nelson: {configuration["nelson"]}");
-            // 通过此方法获取 autofac 的 DI容器
-            _autofacContainer = app.ApplicationServices.GetAutofacRoot();
-            // Configure the HTTP request pipeline.
+            // swagger only used in development.
             if (webHostEnvironment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -62,14 +67,20 @@ namespace MDR.Server.Startups
                 app.UseSwaggerUI();
             }
 
+            // 通过此方法获取 autofac 的 DI容器
+            _autofacContainer = app.ApplicationServices.GetAutofacRoot();
+
+            // Configure the HTTP request pipeline.
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
+            // use http logging
             app.UseHttpLogging();
             // needed for HTTP response body with an API Controller.
             //app.UseMiddleware<NLogResponseBodyMiddleware>(new NLogResponseBodyMiddlewareOptions());
 
+            // cors
             app.UseCors();
             app.UseEndpoints(
                 endpoints => { endpoints.MapControllers(); }

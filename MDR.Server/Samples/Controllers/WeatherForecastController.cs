@@ -2,6 +2,7 @@ using MDR.Data.Model.Jwt;
 using MDR.Infrastructure.Extensions;
 using MDR.Server.Model.DTO;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 
 namespace MDR.Server.Controllers;
@@ -18,6 +19,8 @@ public class WeatherForecastController : ControllerBase
     private readonly ILogger<WeatherForecastController> _logger;
     private IOptionsMonitor<JwtTokenParameterOptions> _jwtTokenParameterOptions;
 
+    public IDistributedCache _memoryCache { get; set; }
+
     public WeatherForecastController(ILogger<WeatherForecastController> logger,
         IOptionsMonitor<JwtTokenParameterOptions> jwtTokenParameterOptions)
     {
@@ -29,6 +32,17 @@ public class WeatherForecastController : ControllerBase
     public IEnumerable<WeatherForecast> Get()
     {
         Console.WriteLine(_jwtTokenParameterOptions.CurrentValue.ToJson());
+        if (_memoryCache.Get("abc") is null)
+        {
+            Console.WriteLine("no abc exists");
+            _memoryCache.SetString("abc", "123",
+                new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1) });
+        }
+        else
+        {
+            Console.WriteLine($"abc: {_memoryCache.GetString("abc")}");
+        }
+
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
