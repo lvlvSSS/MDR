@@ -22,10 +22,12 @@ namespace MDR.Server.Startups
 
             services.AddEndpointsApiExplorer();
             // jwt options
-            services.Configure<JwtTokenParameterOptions>(configuration.GetSection("Jwt:Token"));
+            services.AddOptions<JwtTokenParameterOptions>()
+                .Bind(configuration.GetSection(JwtTokenParameterOptions.Name))
+                .ValidateDataAnnotations();
             // configure memory cache. default is local memory cache.
             services.AddDistributedMemoryCache();
-            services.Configure<MemoryDistributedCacheOptions>(configuration.GetSection("LocalMemoryCache"));
+            services.Configure<MemoryDistributedCacheOptions>(configuration.GetSection(nameof(MemoryCacheOptions)));
 
             // http logging configuration.
             services.AddHttpLogging(builder =>
@@ -62,9 +64,13 @@ namespace MDR.Server.Startups
             // swagger only used in development.
             if (webHostEnvironment.IsDevelopment())
             {
+                // 异常处理
                 app.UseDeveloperExceptionPage();
+                // swagger
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                // 静态文件浏览, 默认指向 wwwroot
+                app.UseFileServer(new FileServerOptions() { EnableDirectoryBrowsing = true });
             }
 
             // 通过此方法获取 autofac 的 DI容器
@@ -82,6 +88,7 @@ namespace MDR.Server.Startups
 
             // cors
             app.UseCors();
+            // 终结点
             app.UseEndpoints(
                 endpoints => { endpoints.MapControllers(); }
             );

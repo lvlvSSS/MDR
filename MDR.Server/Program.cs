@@ -1,4 +1,6 @@
 using Autofac.Extensions.DependencyInjection;
+using MDR.Data.Model.Jwt;
+using MDR.Infrastructure.Extensions;
 using MDR.Server.Startups;
 using Microsoft.AspNetCore.HttpLogging;
 using NLog.Extensions.Logging;
@@ -19,18 +21,40 @@ public class Program
             .ConfigureAppConfiguration((context, config) =>
             {
                 var env = context.HostingEnvironment;
-
                 config
-                    .AddJsonFile("jwt.json", optional: false, reloadOnChange: false)                        // jwt config
-                    .AddJsonFile($"jwt.{env.EnvironmentName}.json", optional: true, reloadOnChange: false)  // jwt-environment config
+                    .AddJsonFile("jwt.json", optional: false, reloadOnChange: false) // jwt config
+                    .AddJsonFile($"jwt.{env.EnvironmentName}.json", optional: true, reloadOnChange: true) // jwt-environment config
                     
-                    .AddJsonFile($"psql.json", optional: true, reloadOnChange: true)                        // postgresql config
-                    .AddJsonFile($"psql.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)  // postgresql-environment config
-                    .AddEnvironmentVariables("PSQL_");                                                          // add postgresql environment
+                    .AddJsonFile($"psql.json", optional: true, reloadOnChange: true) // postgresql config
+                    .AddJsonFile($"psql.{env.EnvironmentName}.json", optional: true, reloadOnChange: true) // postgresql-environment config
+                    .AddEnvironmentVariables("PSQL_"); // add postgresql environment
                 //.AddCommandLine(args);
             })
+            /*
+            .ConfigureServices((context, _) =>
+            {
+                // 注册Configuration的变更监听
+                var targetConfig = context.Configuration;
+                context.Configuration.GetReloadToken()
+                    .RegisterChangeCallback(
+                        (o => { ConfigurationChanged(targetConfig); }),
+                        null);
+            })
+            */
             .ConfigureWebHostDefaults(webBuilder => { _ = webBuilder.UseStartup(typeof(Startup).Assembly.FullName!); })
             .Build().Run();
+    }
+
+    private static void ConfigurationChanged(IConfiguration configuration)
+    {
+        /*
+        JwtTokenParameterOptions jwtTokenParameterOptions = new JwtTokenParameterOptions();
+        configuration.GetSection("Jwt:Token").Bind(jwtTokenParameterOptions);
+        Console.WriteLine($"{jwtTokenParameterOptions.ToJson()}");
+        */
+        // 每次发生变更之后，CancellationTokenSource会重新new一个，因此需要重新注册。
+        configuration.GetReloadToken().RegisterChangeCallback(
+            o => { ConfigurationChanged(configuration); }, null);
     }
 
     #region web application 启动方式

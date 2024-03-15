@@ -20,10 +20,12 @@ namespace MDR.Server.Startups
 
             services.AddEndpointsApiExplorer();
             // jwt options
-            services.Configure<JwtTokenParameterOptions>(configuration.GetSection("Jwt:Token"));
+            services.AddOptions<JwtTokenParameterOptions>()
+                .Bind(configuration.GetSection(JwtTokenParameterOptions.Name))
+                .ValidateDataAnnotations();
             // configure memory cache. default is local memory cache.
             services.AddDistributedMemoryCache();
-            services.Configure<MemoryDistributedCacheOptions>(configuration.GetSection("LocalMemoryCache"));
+            services.Configure<MemoryDistributedCacheOptions>(configuration.GetSection(nameof(MemoryCacheOptions)));
 
             // http logging configuration.
             services.AddHttpLogging(builder =>
@@ -72,6 +74,7 @@ namespace MDR.Server.Startups
 
             // cors
             app.UseCors();
+            // 终结点
             app.UseEndpoints(
                 endpoints => { endpoints.MapControllers(); }
             );
