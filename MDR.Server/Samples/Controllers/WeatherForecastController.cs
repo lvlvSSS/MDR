@@ -34,13 +34,13 @@ public class WeatherForecastController : ControllerBase
         Console.WriteLine(_jwtTokenParameterOptions.CurrentValue.ToJson());
         if (_memoryCache.Get("abc") is null)
         {
-            Console.WriteLine("no abc exists");
+            _logger.LogInformation("no abc exists");
             _memoryCache.SetString("abc", "123",
                 new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1) });
         }
         else
         {
-            Console.WriteLine($"abc: {_memoryCache.GetString("abc")}");
+            _logger.LogInformation("abc: {0}",_memoryCache.GetString("abc"));
         }
 
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast

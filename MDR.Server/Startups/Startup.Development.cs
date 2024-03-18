@@ -47,6 +47,24 @@ namespace MDR.Server.Startups
                 builder.ClearProviders();
                 builder.SetMinimumLevel(LogLevel.Information);
                 builder.AddNLog("NLog.config");
+
+                bool isWindows =
+#if NETCOREAPP
+                    OperatingSystem.IsWindows();
+#elif NETFRAMEWORK
+                    Environment.OSVersion.Platform == PlatformID.Win32NT;
+#else
+                    RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+#endif
+                if (isWindows)
+                {
+                    builder.AddEventLog(settings =>
+                    {
+                        settings.LogName = "MDR";
+                        settings.SourceName = "MDR";
+                        settings.Filter = (_, level) => level >= LogLevel.Error;
+                    });
+                }
             });
         }
 

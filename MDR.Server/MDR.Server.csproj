@@ -34,4 +34,10 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="bin\Debug\net8.0\NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

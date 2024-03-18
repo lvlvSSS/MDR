@@ -1,9 +1,12 @@
+using System.Runtime.InteropServices;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using MDR.Data.Model.Jwt;
+using MDR.Server.Samples.Middlewares;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.Extensions.Caching.Memory;
 using NLog.Extensions.Logging;
+using NLog.Filters;
 
 #nullable enable
 namespace MDR.Server.Startups
@@ -57,6 +60,24 @@ namespace MDR.Server.Startups
                 builder.ClearProviders();
                 builder.SetMinimumLevel(LogLevel.Information);
                 builder.AddNLog("NLog.config");
+
+                bool isWindows =
+#if NETCOREAPP
+                    OperatingSystem.IsWindows();
+#elif NETFRAMEWORK
+                    Environment.OSVersion.Platform == PlatformID.Win32NT;
+#else
+                    RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+#endif
+                if (isWindows)
+                {
+                    builder.AddEventLog(settings =>
+                    {
+                        settings.LogName = "MDR";
+                        settings.SourceName = "MDR";
+                        settings.Filter = (_, level) => level >= LogLevel.Error;
+                    });
+                }
             });
         }
 
@@ -71,6 +92,12 @@ namespace MDR.Server.Startups
 
         public void Configure(IApplicationBuilder app)
         {
+            if (!webHostEnvironment.IsDevelopment())
+            {
+                // 异常处理
+                app.UseExceptionHandler(errorContext => { errorContext.UseMiddleware<MdrJsonExceptionMiddleware>(); });
+            }
+
             // 通过此方法获取 autofac 的 DI容器
             _autofacContainer = app.ApplicationServices.GetAutofacRoot();
             // Configure the HTTP request pipeline.
