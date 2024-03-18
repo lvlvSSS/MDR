@@ -5,13 +5,15 @@ namespace MDR.Server.Samples.Middlewares;
 public class MdrJsonExceptionMiddleware
 {
     private ILogger<MdrJsonExceptionMiddleware> _logger;
+    private RequestDelegate _next;
 
-    public MdrJsonExceptionMiddleware(ILogger<MdrJsonExceptionMiddleware> logger)
+    public MdrJsonExceptionMiddleware(RequestDelegate next, ILogger<MdrJsonExceptionMiddleware> logger)
     {
+        _next = next;
         _logger = logger;
     }
 
-    public async Task Invoke(HttpContext context, RequestDelegate _)
+    public async Task InvokeAsync(HttpContext context)
     {
         // 这里可以自定义 http response 内容，以下仅是示例
 
