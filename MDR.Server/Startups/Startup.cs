@@ -95,7 +95,7 @@ namespace MDR.Server.Startups
             if (!webHostEnvironment.IsDevelopment())
             {
                 // 异常处理
-                app.UseExceptionHandler(errorContext => { errorContext.UseMiddleware<MdrJsonExceptionMiddleware>(); });
+                app.UseExceptionHandler(errorApp => errorApp.UseMiddleware<MdrJsonExceptionMiddleware>());
             }
 
             // 通过此方法获取 autofac 的 DI容器

@@ -22,12 +22,12 @@ public class Program
             {
                 var env = context.HostingEnvironment;
                 config
-                    .AddJsonFile("jwt.json", optional: false, reloadOnChange: false) // jwt config
-                    .AddJsonFile($"jwt.{env.EnvironmentName}.json", optional: true, reloadOnChange: true) // jwt-environment config
+                    .AddJsonFile("jwt.json", optional: false, reloadOnChange: false)                        // jwt config
+                    .AddJsonFile($"jwt.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)   // jwt-environment config
                     
-                    .AddJsonFile($"psql.json", optional: true, reloadOnChange: true) // postgresql config
-                    .AddJsonFile($"psql.{env.EnvironmentName}.json", optional: true, reloadOnChange: true) // postgresql-environment config
-                    .AddEnvironmentVariables("PSQL_"); // add postgresql environment
+                    .AddJsonFile($"psql.json", optional: true, reloadOnChange: true)                        // postgresql config
+                    .AddJsonFile($"psql.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)  // postgresql-environment config
+                    .AddEnvironmentVariables("PSQL_");                                                          // add postgresql environment
                 //.AddCommandLine(args);
             })
             /*

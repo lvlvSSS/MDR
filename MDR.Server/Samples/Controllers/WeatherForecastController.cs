@@ -1,6 +1,7 @@
 using MDR.Data.Model.Jwt;
 using MDR.Infrastructure.Extensions;
 using MDR.Server.Model.DTO;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
@@ -28,6 +29,31 @@ public class WeatherForecastController : ControllerBase
         _jwtTokenParameterOptions = jwtTokenParameterOptions;
     }
 
+    [Route("error")]
+    public void Error(HttpContext context)
+    {
+        var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+
+        _logger.LogError($"Exception Handled：{exceptionHandlerPathFeature.Error}");
+
+        var statusCode = StatusCodes.Status500InternalServerError;
+        var message = exceptionHandlerPathFeature.Error.Message;
+
+        if (exceptionHandlerPathFeature.Error is NotImplementedException)
+        {
+            message = "not implemented";
+            statusCode = StatusCodes.Status501NotImplemented;
+        }
+
+        context.Response.StatusCode = statusCode;
+        context.Response.ContentType = "application/json";
+        context.Response.WriteAsJsonAsync(new
+        {
+            Message = message,
+            Success = false,
+        });
+    }
+
     [HttpGet(template: "Get")]
     public IEnumerable<WeatherForecast> Get()
     {
@@ -40,7 +66,7 @@ public class WeatherForecastController : ControllerBase
         }
         else
         {
-            _logger.LogInformation("abc: {0}",_memoryCache.GetString("abc"));
+            _logger.LogInformation("abc: {0}", _memoryCache.GetString("abc"));
         }
 
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
