@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using MDR.Data.Model.Jwt;
 using MDR.Server.Samples.Middlewares;
 using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Caching.Memory;
 using NLog.Extensions.Logging;
 
@@ -18,7 +19,7 @@ namespace MDR.Server.Startups
         {
             // Add services to the container，并将 Controller 交给 autofac 容器来处理.
             services.AddControllers().AddControllersAsServices();
-
+            
             services.AddEndpointsApiExplorer();
             // jwt options
             services.AddOptions<JwtTokenParameterOptions>()
@@ -65,6 +66,7 @@ namespace MDR.Server.Startups
                     });
                 }
             });
+
         }
 
         // 1. ConfigureContainer 用于使用 Autofac 进行服务注册
@@ -81,8 +83,7 @@ namespace MDR.Server.Startups
             if (!webHostEnvironment.IsDevelopment())
             {
                 // 异常处理
-                app.UseExceptionHandler("/WeatherForecast/Error");
-                //app.UseExceptionHandler(errorApp => errorApp.UseMiddleware<MdrJsonExceptionMiddleware>());
+                app.UseExceptionHandler(errorApp => errorApp.UseMiddleware<MdrJsonExceptionMiddleware>());
             }
 
             // 通过此方法获取 autofac 的 DI容器
@@ -97,7 +98,7 @@ namespace MDR.Server.Startups
             app.UseHttpLogging();
             // needed for HTTP response body with an API Controller.
             //app.UseMiddleware<NLogResponseBodyMiddleware>(new NLogResponseBodyMiddlewareOptions());
-
+            
             // cors
             app.UseCors();
             // 终结点

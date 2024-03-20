@@ -1,3 +1,4 @@
+using System.Net.Mime;
 using Microsoft.AspNetCore.Diagnostics;
 
 namespace MDR.Server.Samples.Middlewares;
@@ -31,7 +32,7 @@ public class MdrJsonExceptionMiddleware
         }
 
         context.Response.StatusCode = statusCode;
-        context.Response.ContentType = "application/json";
+        context.Response.ContentType = MediaTypeNames.Application.Json;
         await context.Response.WriteAsJsonAsync(new
         {
             Message = message,

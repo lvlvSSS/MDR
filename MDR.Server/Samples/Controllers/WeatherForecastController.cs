@@ -1,6 +1,10 @@
+using System.Net.Mime;
+using System.Xml.Serialization;
 using MDR.Data.Model.Jwt;
 using MDR.Infrastructure.Extensions;
 using MDR.Server.Model.DTO;
+using MDR.Server.Samples.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
@@ -29,10 +33,15 @@ public class WeatherForecastController : ControllerBase
         _jwtTokenParameterOptions = jwtTokenParameterOptions;
     }
 
+    /// <summary>
+    /// 异常处理方式之一
+    /// </summary>
+    /// <returns></returns>
+    [AllowAnonymous]
     [Route("error")]
-    public void Error(HttpContext context)
+    public object Error()
     {
-        var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+        var exceptionHandlerPathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
 
         _logger.LogError($"Exception Handled：{exceptionHandlerPathFeature.Error}");
 
@@ -45,15 +54,18 @@ public class WeatherForecastController : ControllerBase
             statusCode = StatusCodes.Status501NotImplemented;
         }
 
-        context.Response.StatusCode = statusCode;
-        context.Response.ContentType = "application/json";
-        context.Response.WriteAsJsonAsync(new
+        Response.StatusCode = statusCode;
+        Response.ContentType = MediaTypeNames.Application.Json;
+
+        return new
         {
             Message = message,
             Success = false,
-        });
+        };
     }
 
+    //[ServiceFilter<MdrExceptionFilter>]
+    [MdrExceptionFilter]
     [HttpGet(template: "Get")]
     public IEnumerable<WeatherForecast> Get()
     {
@@ -69,6 +81,7 @@ public class WeatherForecastController : ControllerBase
             _logger.LogInformation("abc: {0}", _memoryCache.GetString("abc"));
         }
 
+        throw new Exception("MDR exception error");
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),

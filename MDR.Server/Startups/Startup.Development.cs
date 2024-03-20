@@ -19,6 +19,8 @@ namespace MDR.Server.Startups
             services.AddSwaggerGen();
             // Add services to the container，并将 Controller 交给 autofac 容器来处理.
             services.AddControllers().AddControllersAsServices();
+            // 添加 ActionFilters
+            //services.AddScoped<MdrExceptionFilter>();
 
             services.AddEndpointsApiExplorer();
             // jwt options
@@ -83,7 +85,8 @@ namespace MDR.Server.Startups
             if (webHostEnvironment.IsDevelopment())
             {
                 // 异常处理
-                app.UseDeveloperExceptionPage();
+                 app.UseDeveloperExceptionPage();
+                //app.UseExceptionHandler("/weatherforecast/error");
                 // swagger
                 app.UseSwagger();
                 app.UseSwaggerUI();
