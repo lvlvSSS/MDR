@@ -47,11 +47,6 @@ public class Program
 
     private static void ConfigurationChanged(IConfiguration configuration)
     {
-        /*
-        JwtTokenParameterOptions jwtTokenParameterOptions = new JwtTokenParameterOptions();
-        configuration.GetSection("Jwt:Token").Bind(jwtTokenParameterOptions);
-        Console.WriteLine($"{jwtTokenParameterOptions.ToJson()}");
-        */
         // 每次发生变更之后，CancellationTokenSource会重新new一个，因此需要重新注册。
         configuration.GetReloadToken().RegisterChangeCallback(
             o => { ConfigurationChanged(configuration); }, null);

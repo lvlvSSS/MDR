@@ -1,8 +1,19 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using MDR.Data.Model.Jwt;
+using MDR.Server.Samples.Middlewares;
+using MDR.Server.Samples.Models;
+using MDR.Server.Samples.PostConfigures;
 using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using NLog.Extensions.Logging;
 
 namespace MDR.Server.Startups
@@ -16,11 +27,44 @@ namespace MDR.Server.Startups
         public void ConfigureServices(IServiceCollection services)
         {
             // swagger only used in development.
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MDR.WebApi", Version = "v1" });
+
+                var securitySchema = new OpenApiSecurityScheme
+                {
+                    Description =
+                        "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                };
+                c.AddSecurityDefinition("Bearer", securitySchema);
+
+                var securityRequirement = new OpenApiSecurityRequirement
+                {
+                    { securitySchema, new[] { "Bearer" } }
+                };
+                c.AddSecurityRequirement(securityRequirement);
+            });
             // Add services to the container，并将 Controller 交给 autofac 容器来处理.
-            services.AddControllers().AddControllersAsServices();
+            services.AddControllers().AddControllersAsServices().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+            });
+            // add api behavior post configuration in model-binding.
+            services.AddSingleton<IPostConfigureOptions<ApiBehaviorOptions>, ApiBehaviorOptionPostSetup>();
             // 添加 ActionFilters
             //services.AddScoped<MdrExceptionFilter>();
+            services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters()
+                .AddValidatorsFromAssemblyContaining<CreateUserDtoValidator>();
 
             services.AddEndpointsApiExplorer();
             // jwt options
@@ -68,6 +112,8 @@ namespace MDR.Server.Startups
                     });
                 }
             });
+            // 通过 类似于 ThreadLocal<T>， C#中使用 AsyncLocal<T> 实现 HttpContext 注入到每个执行线程中去。
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // 1. ConfigureContainer 用于使用 Autofac 进行服务注册
@@ -85,8 +131,9 @@ namespace MDR.Server.Startups
             if (webHostEnvironment.IsDevelopment())
             {
                 // 异常处理
-                 app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage();
                 //app.UseExceptionHandler("/weatherforecast/error");
+                //app.UseExceptionHandler(errorApp => errorApp.UseMiddleware<MdrJsonExceptionMiddleware>());
                 // swagger
                 app.UseSwagger();
                 app.UseSwaggerUI();

@@ -1,12 +1,14 @@
 using System.Net.Mime;
-using System.Xml.Serialization;
+using MDR.Data.Model.Dtos;
 using MDR.Data.Model.Jwt;
 using MDR.Infrastructure.Extensions;
 using MDR.Server.Model.DTO;
 using MDR.Server.Samples.Filters;
+using MDR.Server.Samples.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 
@@ -67,6 +69,7 @@ public class WeatherForecastController : ControllerBase
     //[ServiceFilter<MdrExceptionFilter>]
     [MdrExceptionFilter]
     [HttpGet(template: "Get")]
+    [AllowAnonymous]
     public IEnumerable<WeatherForecast> Get()
     {
         Console.WriteLine(_jwtTokenParameterOptions.CurrentValue.ToJson());
@@ -81,7 +84,7 @@ public class WeatherForecastController : ControllerBase
             _logger.LogInformation("abc: {0}", _memoryCache.GetString("abc"));
         }
 
-        throw new Exception("MDR exception error");
+        //throw new Exception("MDR exception error"); // 测试 exception filter
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
@@ -89,5 +92,12 @@ public class WeatherForecastController : ControllerBase
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+    }
+
+    [HttpPost("testModel")]
+    [AllowAnonymous]
+    public MdrResponseMessage<CreateUserDto> TestModel(CreateUserDto user)
+    {
+        return MdrResponseMessage<CreateUserDto>.Ok(user);
     }
 }

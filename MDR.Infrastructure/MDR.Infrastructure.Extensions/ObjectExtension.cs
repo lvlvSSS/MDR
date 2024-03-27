@@ -12,7 +12,8 @@ public static class ObjectExtension
         ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
         Formatting = Newtonsoft.Json.Formatting.Indented,
         DateFormatString = "yyyy-MM-dd HH:mm:ss",
-        ContractResolver = new CamelCasePropertyNamesContractResolver()
+        ContractResolver = new CamelCasePropertyNamesContractResolver(),
+        NullValueHandling = NullValueHandling.Ignore
     };
 
     /// <summary>

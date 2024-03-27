@@ -1,10 +1,16 @@
 using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using MDR.Data.Model.Jwt;
 using MDR.Server.Samples.Middlewares;
+using MDR.Server.Samples.Models;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.FileProviders.Physical;
 using NLog.Extensions.Logging;
 using NLog.Filters;
 
@@ -31,7 +37,15 @@ namespace MDR.Server.Startups
         public void ConfigureServices(IServiceCollection services)
         {
             // Add services to the container，并将 Controller 交给 autofac 容器来处理.
-            services.AddControllers().AddControllersAsServices();
+            services.AddControllers().AddControllersAsServices().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+            });
+            // add third-party [fluent-validation] as validation.
+            /*
+            services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters()
+                .AddValidatorsFromAssemblyContaining<CreateUserNameDtoValidator>();
+            */
 
             services.AddEndpointsApiExplorer();
             // jwt options
@@ -79,6 +93,9 @@ namespace MDR.Server.Startups
                     });
                 }
             });
+            
+            // 通过 类似于 ThreadLocal<T>， C#中使用 AsyncLocal<T> 实现 HttpContext 注入到每个执行线程中去。
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // 1. ConfigureContainer 用于使用 Autofac 进行服务注册
@@ -102,7 +119,7 @@ namespace MDR.Server.Startups
             _autofacContainer = app.ApplicationServices.GetAutofacRoot();
             // Configure the HTTP request pipeline.
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
             // use http logging
