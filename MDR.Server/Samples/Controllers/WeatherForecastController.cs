@@ -83,7 +83,7 @@ public class WeatherForecastController : ControllerBase
         {
             _logger.LogInformation("abc: {0}", _memoryCache.GetString("abc"));
         }
-
+    
         //throw new Exception("MDR exception error"); // 测试 exception filter
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {

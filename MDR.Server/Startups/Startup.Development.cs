@@ -1,18 +1,23 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using IdentityModel;
 using MDR.Data.Model.Jwt;
 using MDR.Server.Samples.Middlewares;
 using MDR.Server.Samples.Models;
 using MDR.Server.Samples.PostConfigures;
+using MDR.Server.Startups;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NLog.Extensions.Logging;
 
@@ -59,18 +64,33 @@ namespace MDR.Server.Startups
                 options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                 options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
             });
+
+            var jwtOptions = configuration.GetSection(JwtTokenParameterOptions.Name).Get<JwtTokenParameterOptions>();
+
+            // add jwt bearer auth
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+                {
+                    options.TokenValidationParameters = jwtOptions!.DefaultTokenValidationParameters;
+                    //options.EventsType = typeof(AppJwtBearerEvents);
+                });
+
+
             // add api behavior post configuration in model-binding.
             services.AddSingleton<IPostConfigureOptions<ApiBehaviorOptions>, ApiBehaviorOptionPostSetup>();
+
             // 添加 ActionFilters
             //services.AddScoped<MdrExceptionFilter>();
             services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters()
                 .AddValidatorsFromAssemblyContaining<CreateUserDtoValidator>();
 
             services.AddEndpointsApiExplorer();
+
             // jwt options
             services.AddOptions<JwtTokenParameterOptions>()
                 .Bind(configuration.GetSection(JwtTokenParameterOptions.Name))
                 .ValidateDataAnnotations();
+
             // configure memory cache. default is local memory cache.
             services.AddDistributedMemoryCache();
             services.Configure<MemoryDistributedCacheOptions>(configuration.GetSection(nameof(MemoryCacheOptions)));
@@ -87,6 +107,7 @@ namespace MDR.Server.Startups
                 builder.RequestBodyLogLimit = 500 * 1024;
                 builder.ResponseBodyLogLimit = 500 * 1024;
             });
+
             // configure NLog as http logging.
             services.AddLogging(builder =>
             {
@@ -116,9 +137,9 @@ namespace MDR.Server.Startups
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
-        // 1. ConfigureContainer 用于使用 Autofac 进行服务注册
-        // 2. 该方法在 ConfigureServices 之后运行，所以这里的注册会覆盖之前的注册
-        // 3. 不要 build 容器，不要调用 builder.Populate()，AutofacServiceProviderFactory 已经做了这些工作了
+// 1. ConfigureContainer 用于使用 Autofac 进行服务注册
+// 2. 该方法在 ConfigureServices 之后运行，所以这里的注册会覆盖之前的注册
+// 3. 不要 build 容器，不要调用 builder.Populate()，AutofacServiceProviderFactory 已经做了这些工作了
         public void ConfigureContainer(ContainerBuilder builder)
         {
             // 将服务注册划分为模块，进行注册

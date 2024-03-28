@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\MDR.Data\MDR.Data.Model\MDR.Data.Model.csproj" />
+  </ItemGroup>
+
 </Project>
